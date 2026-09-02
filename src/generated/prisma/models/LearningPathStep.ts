@@ -39,6 +39,8 @@ export type LearningPathStepMinAggregateOutputType = {
   pathId: string | null
   skillId: string | null
   courseId: string | null
+  customTitle: string | null
+  customUrl: string | null
   phase: string | null
   order: number | null
   isRequired: boolean | null
@@ -49,6 +51,8 @@ export type LearningPathStepMaxAggregateOutputType = {
   pathId: string | null
   skillId: string | null
   courseId: string | null
+  customTitle: string | null
+  customUrl: string | null
   phase: string | null
   order: number | null
   isRequired: boolean | null
@@ -59,6 +63,8 @@ export type LearningPathStepCountAggregateOutputType = {
   pathId: number
   skillId: number
   courseId: number
+  customTitle: number
+  customUrl: number
   phase: number
   order: number
   isRequired: number
@@ -79,6 +85,8 @@ export type LearningPathStepMinAggregateInputType = {
   pathId?: true
   skillId?: true
   courseId?: true
+  customTitle?: true
+  customUrl?: true
   phase?: true
   order?: true
   isRequired?: true
@@ -89,6 +97,8 @@ export type LearningPathStepMaxAggregateInputType = {
   pathId?: true
   skillId?: true
   courseId?: true
+  customTitle?: true
+  customUrl?: true
   phase?: true
   order?: true
   isRequired?: true
@@ -99,6 +109,8 @@ export type LearningPathStepCountAggregateInputType = {
   pathId?: true
   skillId?: true
   courseId?: true
+  customTitle?: true
+  customUrl?: true
   phase?: true
   order?: true
   isRequired?: true
@@ -196,6 +208,8 @@ export type LearningPathStepGroupByOutputType = {
   pathId: string
   skillId: string | null
   courseId: string | null
+  customTitle: string | null
+  customUrl: string | null
   phase: string
   order: number
   isRequired: boolean
@@ -229,6 +243,8 @@ export type LearningPathStepWhereInput = {
   pathId?: Prisma.StringFilter<"LearningPathStep"> | string
   skillId?: Prisma.StringNullableFilter<"LearningPathStep"> | string | null
   courseId?: Prisma.StringNullableFilter<"LearningPathStep"> | string | null
+  customTitle?: Prisma.StringNullableFilter<"LearningPathStep"> | string | null
+  customUrl?: Prisma.StringNullableFilter<"LearningPathStep"> | string | null
   phase?: Prisma.StringFilter<"LearningPathStep"> | string
   order?: Prisma.IntFilter<"LearningPathStep"> | number
   isRequired?: Prisma.BoolFilter<"LearningPathStep"> | boolean
@@ -242,6 +258,8 @@ export type LearningPathStepOrderByWithRelationInput = {
   pathId?: Prisma.SortOrder
   skillId?: Prisma.SortOrderInput | Prisma.SortOrder
   courseId?: Prisma.SortOrderInput | Prisma.SortOrder
+  customTitle?: Prisma.SortOrderInput | Prisma.SortOrder
+  customUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   phase?: Prisma.SortOrder
   order?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
@@ -260,6 +278,8 @@ export type LearningPathStepWhereUniqueInput = Prisma.AtLeast<{
   pathId?: Prisma.StringFilter<"LearningPathStep"> | string
   skillId?: Prisma.StringNullableFilter<"LearningPathStep"> | string | null
   courseId?: Prisma.StringNullableFilter<"LearningPathStep"> | string | null
+  customTitle?: Prisma.StringNullableFilter<"LearningPathStep"> | string | null
+  customUrl?: Prisma.StringNullableFilter<"LearningPathStep"> | string | null
   phase?: Prisma.StringFilter<"LearningPathStep"> | string
   order?: Prisma.IntFilter<"LearningPathStep"> | number
   isRequired?: Prisma.BoolFilter<"LearningPathStep"> | boolean
@@ -273,6 +293,8 @@ export type LearningPathStepOrderByWithAggregationInput = {
   pathId?: Prisma.SortOrder
   skillId?: Prisma.SortOrderInput | Prisma.SortOrder
   courseId?: Prisma.SortOrderInput | Prisma.SortOrder
+  customTitle?: Prisma.SortOrderInput | Prisma.SortOrder
+  customUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   phase?: Prisma.SortOrder
   order?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
@@ -291,6 +313,8 @@ export type LearningPathStepScalarWhereWithAggregatesInput = {
   pathId?: Prisma.StringWithAggregatesFilter<"LearningPathStep"> | string
   skillId?: Prisma.StringNullableWithAggregatesFilter<"LearningPathStep"> | string | null
   courseId?: Prisma.StringNullableWithAggregatesFilter<"LearningPathStep"> | string | null
+  customTitle?: Prisma.StringNullableWithAggregatesFilter<"LearningPathStep"> | string | null
+  customUrl?: Prisma.StringNullableWithAggregatesFilter<"LearningPathStep"> | string | null
   phase?: Prisma.StringWithAggregatesFilter<"LearningPathStep"> | string
   order?: Prisma.IntWithAggregatesFilter<"LearningPathStep"> | number
   isRequired?: Prisma.BoolWithAggregatesFilter<"LearningPathStep"> | boolean
@@ -298,6 +322,8 @@ export type LearningPathStepScalarWhereWithAggregatesInput = {
 
 export type LearningPathStepCreateInput = {
   id?: string
+  customTitle?: string | null
+  customUrl?: string | null
   phase: string
   order: number
   isRequired?: boolean
@@ -311,6 +337,8 @@ export type LearningPathStepUncheckedCreateInput = {
   pathId: string
   skillId?: string | null
   courseId?: string | null
+  customTitle?: string | null
+  customUrl?: string | null
   phase: string
   order: number
   isRequired?: boolean
@@ -318,6 +346,8 @@ export type LearningPathStepUncheckedCreateInput = {
 
 export type LearningPathStepUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  customTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phase?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -331,6 +361,8 @@ export type LearningPathStepUncheckedUpdateInput = {
   pathId?: Prisma.StringFieldUpdateOperationsInput | string
   skillId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phase?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -341,6 +373,8 @@ export type LearningPathStepCreateManyInput = {
   pathId: string
   skillId?: string | null
   courseId?: string | null
+  customTitle?: string | null
+  customUrl?: string | null
   phase: string
   order: number
   isRequired?: boolean
@@ -348,6 +382,8 @@ export type LearningPathStepCreateManyInput = {
 
 export type LearningPathStepUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  customTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phase?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -358,6 +394,8 @@ export type LearningPathStepUncheckedUpdateManyInput = {
   pathId?: Prisma.StringFieldUpdateOperationsInput | string
   skillId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phase?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -388,6 +426,8 @@ export type LearningPathStepCountOrderByAggregateInput = {
   pathId?: Prisma.SortOrder
   skillId?: Prisma.SortOrder
   courseId?: Prisma.SortOrder
+  customTitle?: Prisma.SortOrder
+  customUrl?: Prisma.SortOrder
   phase?: Prisma.SortOrder
   order?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
@@ -402,6 +442,8 @@ export type LearningPathStepMaxOrderByAggregateInput = {
   pathId?: Prisma.SortOrder
   skillId?: Prisma.SortOrder
   courseId?: Prisma.SortOrder
+  customTitle?: Prisma.SortOrder
+  customUrl?: Prisma.SortOrder
   phase?: Prisma.SortOrder
   order?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
@@ -412,6 +454,8 @@ export type LearningPathStepMinOrderByAggregateInput = {
   pathId?: Prisma.SortOrder
   skillId?: Prisma.SortOrder
   courseId?: Prisma.SortOrder
+  customTitle?: Prisma.SortOrder
+  customUrl?: Prisma.SortOrder
   phase?: Prisma.SortOrder
   order?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
@@ -549,6 +593,8 @@ export type LearningPathStepUncheckedUpdateManyWithoutPathNestedInput = {
 
 export type LearningPathStepCreateWithoutSkillInput = {
   id?: string
+  customTitle?: string | null
+  customUrl?: string | null
   phase: string
   order: number
   isRequired?: boolean
@@ -560,6 +606,8 @@ export type LearningPathStepUncheckedCreateWithoutSkillInput = {
   id?: string
   pathId: string
   courseId?: string | null
+  customTitle?: string | null
+  customUrl?: string | null
   phase: string
   order: number
   isRequired?: boolean
@@ -598,6 +646,8 @@ export type LearningPathStepScalarWhereInput = {
   pathId?: Prisma.StringFilter<"LearningPathStep"> | string
   skillId?: Prisma.StringNullableFilter<"LearningPathStep"> | string | null
   courseId?: Prisma.StringNullableFilter<"LearningPathStep"> | string | null
+  customTitle?: Prisma.StringNullableFilter<"LearningPathStep"> | string | null
+  customUrl?: Prisma.StringNullableFilter<"LearningPathStep"> | string | null
   phase?: Prisma.StringFilter<"LearningPathStep"> | string
   order?: Prisma.IntFilter<"LearningPathStep"> | number
   isRequired?: Prisma.BoolFilter<"LearningPathStep"> | boolean
@@ -605,6 +655,8 @@ export type LearningPathStepScalarWhereInput = {
 
 export type LearningPathStepCreateWithoutCourseInput = {
   id?: string
+  customTitle?: string | null
+  customUrl?: string | null
   phase: string
   order: number
   isRequired?: boolean
@@ -616,6 +668,8 @@ export type LearningPathStepUncheckedCreateWithoutCourseInput = {
   id?: string
   pathId: string
   skillId?: string | null
+  customTitle?: string | null
+  customUrl?: string | null
   phase: string
   order: number
   isRequired?: boolean
@@ -648,6 +702,8 @@ export type LearningPathStepUpdateManyWithWhereWithoutCourseInput = {
 
 export type LearningPathStepCreateWithoutPathInput = {
   id?: string
+  customTitle?: string | null
+  customUrl?: string | null
   phase: string
   order: number
   isRequired?: boolean
@@ -659,6 +715,8 @@ export type LearningPathStepUncheckedCreateWithoutPathInput = {
   id?: string
   skillId?: string | null
   courseId?: string | null
+  customTitle?: string | null
+  customUrl?: string | null
   phase: string
   order: number
   isRequired?: boolean
@@ -693,6 +751,8 @@ export type LearningPathStepCreateManySkillInput = {
   id?: string
   pathId: string
   courseId?: string | null
+  customTitle?: string | null
+  customUrl?: string | null
   phase: string
   order: number
   isRequired?: boolean
@@ -700,6 +760,8 @@ export type LearningPathStepCreateManySkillInput = {
 
 export type LearningPathStepUpdateWithoutSkillInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  customTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phase?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -711,6 +773,8 @@ export type LearningPathStepUncheckedUpdateWithoutSkillInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   pathId?: Prisma.StringFieldUpdateOperationsInput | string
   courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phase?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -720,6 +784,8 @@ export type LearningPathStepUncheckedUpdateManyWithoutSkillInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   pathId?: Prisma.StringFieldUpdateOperationsInput | string
   courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phase?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -729,6 +795,8 @@ export type LearningPathStepCreateManyCourseInput = {
   id?: string
   pathId: string
   skillId?: string | null
+  customTitle?: string | null
+  customUrl?: string | null
   phase: string
   order: number
   isRequired?: boolean
@@ -736,6 +804,8 @@ export type LearningPathStepCreateManyCourseInput = {
 
 export type LearningPathStepUpdateWithoutCourseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  customTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phase?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -747,6 +817,8 @@ export type LearningPathStepUncheckedUpdateWithoutCourseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   pathId?: Prisma.StringFieldUpdateOperationsInput | string
   skillId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phase?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -756,6 +828,8 @@ export type LearningPathStepUncheckedUpdateManyWithoutCourseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   pathId?: Prisma.StringFieldUpdateOperationsInput | string
   skillId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phase?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -765,6 +839,8 @@ export type LearningPathStepCreateManyPathInput = {
   id?: string
   skillId?: string | null
   courseId?: string | null
+  customTitle?: string | null
+  customUrl?: string | null
   phase: string
   order: number
   isRequired?: boolean
@@ -772,6 +848,8 @@ export type LearningPathStepCreateManyPathInput = {
 
 export type LearningPathStepUpdateWithoutPathInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  customTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phase?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -783,6 +861,8 @@ export type LearningPathStepUncheckedUpdateWithoutPathInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   skillId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phase?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -792,6 +872,8 @@ export type LearningPathStepUncheckedUpdateManyWithoutPathInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   skillId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phase?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -804,6 +886,8 @@ export type LearningPathStepSelect<ExtArgs extends runtime.Types.Extensions.Inte
   pathId?: boolean
   skillId?: boolean
   courseId?: boolean
+  customTitle?: boolean
+  customUrl?: boolean
   phase?: boolean
   order?: boolean
   isRequired?: boolean
@@ -817,6 +901,8 @@ export type LearningPathStepSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   pathId?: boolean
   skillId?: boolean
   courseId?: boolean
+  customTitle?: boolean
+  customUrl?: boolean
   phase?: boolean
   order?: boolean
   isRequired?: boolean
@@ -830,6 +916,8 @@ export type LearningPathStepSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   pathId?: boolean
   skillId?: boolean
   courseId?: boolean
+  customTitle?: boolean
+  customUrl?: boolean
   phase?: boolean
   order?: boolean
   isRequired?: boolean
@@ -843,12 +931,14 @@ export type LearningPathStepSelectScalar = {
   pathId?: boolean
   skillId?: boolean
   courseId?: boolean
+  customTitle?: boolean
+  customUrl?: boolean
   phase?: boolean
   order?: boolean
   isRequired?: boolean
 }
 
-export type LearningPathStepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "pathId" | "skillId" | "courseId" | "phase" | "order" | "isRequired", ExtArgs["result"]["learningPathStep"]>
+export type LearningPathStepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "pathId" | "skillId" | "courseId" | "customTitle" | "customUrl" | "phase" | "order" | "isRequired", ExtArgs["result"]["learningPathStep"]>
 export type LearningPathStepInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   path?: boolean | Prisma.LearningPathDefaultArgs<ExtArgs>
   skill?: boolean | Prisma.LearningPathStep$skillArgs<ExtArgs>
@@ -877,6 +967,8 @@ export type $LearningPathStepPayload<ExtArgs extends runtime.Types.Extensions.In
     pathId: string
     skillId: string | null
     courseId: string | null
+    customTitle: string | null
+    customUrl: string | null
     phase: string
     order: number
     isRequired: boolean
@@ -1310,6 +1402,8 @@ export interface LearningPathStepFieldRefs {
   readonly pathId: Prisma.FieldRef<"LearningPathStep", 'String'>
   readonly skillId: Prisma.FieldRef<"LearningPathStep", 'String'>
   readonly courseId: Prisma.FieldRef<"LearningPathStep", 'String'>
+  readonly customTitle: Prisma.FieldRef<"LearningPathStep", 'String'>
+  readonly customUrl: Prisma.FieldRef<"LearningPathStep", 'String'>
   readonly phase: Prisma.FieldRef<"LearningPathStep", 'String'>
   readonly order: Prisma.FieldRef<"LearningPathStep", 'Int'>
   readonly isRequired: Prisma.FieldRef<"LearningPathStep", 'Boolean'>

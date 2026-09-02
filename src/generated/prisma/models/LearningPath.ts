@@ -40,6 +40,7 @@ export type LearningPathMinAggregateOutputType = {
   id: string | null
   slug: string | null
   domainId: string | null
+  ownerId: string | null
   name: string | null
   tagline: string | null
   description: string | null
@@ -52,6 +53,7 @@ export type LearningPathMaxAggregateOutputType = {
   id: string | null
   slug: string | null
   domainId: string | null
+  ownerId: string | null
   name: string | null
   tagline: string | null
   description: string | null
@@ -64,6 +66,7 @@ export type LearningPathCountAggregateOutputType = {
   id: number
   slug: number
   domainId: number
+  ownerId: number
   name: number
   tagline: number
   description: number
@@ -88,6 +91,7 @@ export type LearningPathMinAggregateInputType = {
   id?: true
   slug?: true
   domainId?: true
+  ownerId?: true
   name?: true
   tagline?: true
   description?: true
@@ -100,6 +104,7 @@ export type LearningPathMaxAggregateInputType = {
   id?: true
   slug?: true
   domainId?: true
+  ownerId?: true
   name?: true
   tagline?: true
   description?: true
@@ -112,6 +117,7 @@ export type LearningPathCountAggregateInputType = {
   id?: true
   slug?: true
   domainId?: true
+  ownerId?: true
   name?: true
   tagline?: true
   description?: true
@@ -211,6 +217,7 @@ export type LearningPathGroupByOutputType = {
   id: string
   slug: string
   domainId: string
+  ownerId: string | null
   name: string
   tagline: string | null
   description: string | null
@@ -246,6 +253,7 @@ export type LearningPathWhereInput = {
   id?: Prisma.StringFilter<"LearningPath"> | string
   slug?: Prisma.StringFilter<"LearningPath"> | string
   domainId?: Prisma.StringFilter<"LearningPath"> | string
+  ownerId?: Prisma.StringNullableFilter<"LearningPath"> | string | null
   name?: Prisma.StringFilter<"LearningPath"> | string
   tagline?: Prisma.StringNullableFilter<"LearningPath"> | string | null
   description?: Prisma.StringNullableFilter<"LearningPath"> | string | null
@@ -253,6 +261,7 @@ export type LearningPathWhereInput = {
   estimatedMonths?: Prisma.IntNullableFilter<"LearningPath"> | number | null
   order?: Prisma.IntFilter<"LearningPath"> | number
   domain?: Prisma.XOR<Prisma.DomainScalarRelationFilter, Prisma.DomainWhereInput>
+  owner?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   steps?: Prisma.LearningPathStepListRelationFilter
   userGoals?: Prisma.UserGoalListRelationFilter
 }
@@ -261,6 +270,7 @@ export type LearningPathOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   domainId?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   tagline?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -268,6 +278,7 @@ export type LearningPathOrderByWithRelationInput = {
   estimatedMonths?: Prisma.SortOrderInput | Prisma.SortOrder
   order?: Prisma.SortOrder
   domain?: Prisma.DomainOrderByWithRelationInput
+  owner?: Prisma.UserOrderByWithRelationInput
   steps?: Prisma.LearningPathStepOrderByRelationAggregateInput
   userGoals?: Prisma.UserGoalOrderByRelationAggregateInput
 }
@@ -279,6 +290,7 @@ export type LearningPathWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.LearningPathWhereInput[]
   NOT?: Prisma.LearningPathWhereInput | Prisma.LearningPathWhereInput[]
   domainId?: Prisma.StringFilter<"LearningPath"> | string
+  ownerId?: Prisma.StringNullableFilter<"LearningPath"> | string | null
   name?: Prisma.StringFilter<"LearningPath"> | string
   tagline?: Prisma.StringNullableFilter<"LearningPath"> | string | null
   description?: Prisma.StringNullableFilter<"LearningPath"> | string | null
@@ -286,6 +298,7 @@ export type LearningPathWhereUniqueInput = Prisma.AtLeast<{
   estimatedMonths?: Prisma.IntNullableFilter<"LearningPath"> | number | null
   order?: Prisma.IntFilter<"LearningPath"> | number
   domain?: Prisma.XOR<Prisma.DomainScalarRelationFilter, Prisma.DomainWhereInput>
+  owner?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   steps?: Prisma.LearningPathStepListRelationFilter
   userGoals?: Prisma.UserGoalListRelationFilter
 }, "id" | "slug">
@@ -294,6 +307,7 @@ export type LearningPathOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   domainId?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   tagline?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -314,6 +328,7 @@ export type LearningPathScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"LearningPath"> | string
   slug?: Prisma.StringWithAggregatesFilter<"LearningPath"> | string
   domainId?: Prisma.StringWithAggregatesFilter<"LearningPath"> | string
+  ownerId?: Prisma.StringNullableWithAggregatesFilter<"LearningPath"> | string | null
   name?: Prisma.StringWithAggregatesFilter<"LearningPath"> | string
   tagline?: Prisma.StringNullableWithAggregatesFilter<"LearningPath"> | string | null
   description?: Prisma.StringNullableWithAggregatesFilter<"LearningPath"> | string | null
@@ -332,6 +347,7 @@ export type LearningPathCreateInput = {
   estimatedMonths?: number | null
   order?: number
   domain: Prisma.DomainCreateNestedOneWithoutPathsInput
+  owner?: Prisma.UserCreateNestedOneWithoutPathsInput
   steps?: Prisma.LearningPathStepCreateNestedManyWithoutPathInput
   userGoals?: Prisma.UserGoalCreateNestedManyWithoutPathInput
 }
@@ -340,6 +356,7 @@ export type LearningPathUncheckedCreateInput = {
   id?: string
   slug: string
   domainId: string
+  ownerId?: string | null
   name: string
   tagline?: string | null
   description?: string | null
@@ -360,6 +377,7 @@ export type LearningPathUpdateInput = {
   estimatedMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   domain?: Prisma.DomainUpdateOneRequiredWithoutPathsNestedInput
+  owner?: Prisma.UserUpdateOneWithoutPathsNestedInput
   steps?: Prisma.LearningPathStepUpdateManyWithoutPathNestedInput
   userGoals?: Prisma.UserGoalUpdateManyWithoutPathNestedInput
 }
@@ -368,6 +386,7 @@ export type LearningPathUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   domainId?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -382,6 +401,7 @@ export type LearningPathCreateManyInput = {
   id?: string
   slug: string
   domainId: string
+  ownerId?: string | null
   name: string
   tagline?: string | null
   description?: string | null
@@ -405,6 +425,7 @@ export type LearningPathUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   domainId?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -427,6 +448,7 @@ export type LearningPathCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   domainId?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   tagline?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -444,6 +466,7 @@ export type LearningPathMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   domainId?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   tagline?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -456,6 +479,7 @@ export type LearningPathMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   domainId?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   tagline?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -472,6 +496,48 @@ export type LearningPathSumOrderByAggregateInput = {
 export type LearningPathScalarRelationFilter = {
   is?: Prisma.LearningPathWhereInput
   isNot?: Prisma.LearningPathWhereInput
+}
+
+export type LearningPathCreateNestedManyWithoutOwnerInput = {
+  create?: Prisma.XOR<Prisma.LearningPathCreateWithoutOwnerInput, Prisma.LearningPathUncheckedCreateWithoutOwnerInput> | Prisma.LearningPathCreateWithoutOwnerInput[] | Prisma.LearningPathUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.LearningPathCreateOrConnectWithoutOwnerInput | Prisma.LearningPathCreateOrConnectWithoutOwnerInput[]
+  createMany?: Prisma.LearningPathCreateManyOwnerInputEnvelope
+  connect?: Prisma.LearningPathWhereUniqueInput | Prisma.LearningPathWhereUniqueInput[]
+}
+
+export type LearningPathUncheckedCreateNestedManyWithoutOwnerInput = {
+  create?: Prisma.XOR<Prisma.LearningPathCreateWithoutOwnerInput, Prisma.LearningPathUncheckedCreateWithoutOwnerInput> | Prisma.LearningPathCreateWithoutOwnerInput[] | Prisma.LearningPathUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.LearningPathCreateOrConnectWithoutOwnerInput | Prisma.LearningPathCreateOrConnectWithoutOwnerInput[]
+  createMany?: Prisma.LearningPathCreateManyOwnerInputEnvelope
+  connect?: Prisma.LearningPathWhereUniqueInput | Prisma.LearningPathWhereUniqueInput[]
+}
+
+export type LearningPathUpdateManyWithoutOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.LearningPathCreateWithoutOwnerInput, Prisma.LearningPathUncheckedCreateWithoutOwnerInput> | Prisma.LearningPathCreateWithoutOwnerInput[] | Prisma.LearningPathUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.LearningPathCreateOrConnectWithoutOwnerInput | Prisma.LearningPathCreateOrConnectWithoutOwnerInput[]
+  upsert?: Prisma.LearningPathUpsertWithWhereUniqueWithoutOwnerInput | Prisma.LearningPathUpsertWithWhereUniqueWithoutOwnerInput[]
+  createMany?: Prisma.LearningPathCreateManyOwnerInputEnvelope
+  set?: Prisma.LearningPathWhereUniqueInput | Prisma.LearningPathWhereUniqueInput[]
+  disconnect?: Prisma.LearningPathWhereUniqueInput | Prisma.LearningPathWhereUniqueInput[]
+  delete?: Prisma.LearningPathWhereUniqueInput | Prisma.LearningPathWhereUniqueInput[]
+  connect?: Prisma.LearningPathWhereUniqueInput | Prisma.LearningPathWhereUniqueInput[]
+  update?: Prisma.LearningPathUpdateWithWhereUniqueWithoutOwnerInput | Prisma.LearningPathUpdateWithWhereUniqueWithoutOwnerInput[]
+  updateMany?: Prisma.LearningPathUpdateManyWithWhereWithoutOwnerInput | Prisma.LearningPathUpdateManyWithWhereWithoutOwnerInput[]
+  deleteMany?: Prisma.LearningPathScalarWhereInput | Prisma.LearningPathScalarWhereInput[]
+}
+
+export type LearningPathUncheckedUpdateManyWithoutOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.LearningPathCreateWithoutOwnerInput, Prisma.LearningPathUncheckedCreateWithoutOwnerInput> | Prisma.LearningPathCreateWithoutOwnerInput[] | Prisma.LearningPathUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.LearningPathCreateOrConnectWithoutOwnerInput | Prisma.LearningPathCreateOrConnectWithoutOwnerInput[]
+  upsert?: Prisma.LearningPathUpsertWithWhereUniqueWithoutOwnerInput | Prisma.LearningPathUpsertWithWhereUniqueWithoutOwnerInput[]
+  createMany?: Prisma.LearningPathCreateManyOwnerInputEnvelope
+  set?: Prisma.LearningPathWhereUniqueInput | Prisma.LearningPathWhereUniqueInput[]
+  disconnect?: Prisma.LearningPathWhereUniqueInput | Prisma.LearningPathWhereUniqueInput[]
+  delete?: Prisma.LearningPathWhereUniqueInput | Prisma.LearningPathWhereUniqueInput[]
+  connect?: Prisma.LearningPathWhereUniqueInput | Prisma.LearningPathWhereUniqueInput[]
+  update?: Prisma.LearningPathUpdateWithWhereUniqueWithoutOwnerInput | Prisma.LearningPathUpdateWithWhereUniqueWithoutOwnerInput[]
+  updateMany?: Prisma.LearningPathUpdateManyWithWhereWithoutOwnerInput | Prisma.LearningPathUpdateManyWithWhereWithoutOwnerInput[]
+  deleteMany?: Prisma.LearningPathScalarWhereInput | Prisma.LearningPathScalarWhereInput[]
 }
 
 export type LearningPathCreateNestedManyWithoutDomainInput = {
@@ -544,6 +610,75 @@ export type LearningPathUpdateOneRequiredWithoutUserGoalsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.LearningPathUpdateToOneWithWhereWithoutUserGoalsInput, Prisma.LearningPathUpdateWithoutUserGoalsInput>, Prisma.LearningPathUncheckedUpdateWithoutUserGoalsInput>
 }
 
+export type LearningPathCreateWithoutOwnerInput = {
+  id?: string
+  slug: string
+  name: string
+  tagline?: string | null
+  description?: string | null
+  level?: string | null
+  estimatedMonths?: number | null
+  order?: number
+  domain: Prisma.DomainCreateNestedOneWithoutPathsInput
+  steps?: Prisma.LearningPathStepCreateNestedManyWithoutPathInput
+  userGoals?: Prisma.UserGoalCreateNestedManyWithoutPathInput
+}
+
+export type LearningPathUncheckedCreateWithoutOwnerInput = {
+  id?: string
+  slug: string
+  domainId: string
+  name: string
+  tagline?: string | null
+  description?: string | null
+  level?: string | null
+  estimatedMonths?: number | null
+  order?: number
+  steps?: Prisma.LearningPathStepUncheckedCreateNestedManyWithoutPathInput
+  userGoals?: Prisma.UserGoalUncheckedCreateNestedManyWithoutPathInput
+}
+
+export type LearningPathCreateOrConnectWithoutOwnerInput = {
+  where: Prisma.LearningPathWhereUniqueInput
+  create: Prisma.XOR<Prisma.LearningPathCreateWithoutOwnerInput, Prisma.LearningPathUncheckedCreateWithoutOwnerInput>
+}
+
+export type LearningPathCreateManyOwnerInputEnvelope = {
+  data: Prisma.LearningPathCreateManyOwnerInput | Prisma.LearningPathCreateManyOwnerInput[]
+}
+
+export type LearningPathUpsertWithWhereUniqueWithoutOwnerInput = {
+  where: Prisma.LearningPathWhereUniqueInput
+  update: Prisma.XOR<Prisma.LearningPathUpdateWithoutOwnerInput, Prisma.LearningPathUncheckedUpdateWithoutOwnerInput>
+  create: Prisma.XOR<Prisma.LearningPathCreateWithoutOwnerInput, Prisma.LearningPathUncheckedCreateWithoutOwnerInput>
+}
+
+export type LearningPathUpdateWithWhereUniqueWithoutOwnerInput = {
+  where: Prisma.LearningPathWhereUniqueInput
+  data: Prisma.XOR<Prisma.LearningPathUpdateWithoutOwnerInput, Prisma.LearningPathUncheckedUpdateWithoutOwnerInput>
+}
+
+export type LearningPathUpdateManyWithWhereWithoutOwnerInput = {
+  where: Prisma.LearningPathScalarWhereInput
+  data: Prisma.XOR<Prisma.LearningPathUpdateManyMutationInput, Prisma.LearningPathUncheckedUpdateManyWithoutOwnerInput>
+}
+
+export type LearningPathScalarWhereInput = {
+  AND?: Prisma.LearningPathScalarWhereInput | Prisma.LearningPathScalarWhereInput[]
+  OR?: Prisma.LearningPathScalarWhereInput[]
+  NOT?: Prisma.LearningPathScalarWhereInput | Prisma.LearningPathScalarWhereInput[]
+  id?: Prisma.StringFilter<"LearningPath"> | string
+  slug?: Prisma.StringFilter<"LearningPath"> | string
+  domainId?: Prisma.StringFilter<"LearningPath"> | string
+  ownerId?: Prisma.StringNullableFilter<"LearningPath"> | string | null
+  name?: Prisma.StringFilter<"LearningPath"> | string
+  tagline?: Prisma.StringNullableFilter<"LearningPath"> | string | null
+  description?: Prisma.StringNullableFilter<"LearningPath"> | string | null
+  level?: Prisma.StringNullableFilter<"LearningPath"> | string | null
+  estimatedMonths?: Prisma.IntNullableFilter<"LearningPath"> | number | null
+  order?: Prisma.IntFilter<"LearningPath"> | number
+}
+
 export type LearningPathCreateWithoutDomainInput = {
   id?: string
   slug: string
@@ -553,6 +688,7 @@ export type LearningPathCreateWithoutDomainInput = {
   level?: string | null
   estimatedMonths?: number | null
   order?: number
+  owner?: Prisma.UserCreateNestedOneWithoutPathsInput
   steps?: Prisma.LearningPathStepCreateNestedManyWithoutPathInput
   userGoals?: Prisma.UserGoalCreateNestedManyWithoutPathInput
 }
@@ -560,6 +696,7 @@ export type LearningPathCreateWithoutDomainInput = {
 export type LearningPathUncheckedCreateWithoutDomainInput = {
   id?: string
   slug: string
+  ownerId?: string | null
   name: string
   tagline?: string | null
   description?: string | null
@@ -595,21 +732,6 @@ export type LearningPathUpdateManyWithWhereWithoutDomainInput = {
   data: Prisma.XOR<Prisma.LearningPathUpdateManyMutationInput, Prisma.LearningPathUncheckedUpdateManyWithoutDomainInput>
 }
 
-export type LearningPathScalarWhereInput = {
-  AND?: Prisma.LearningPathScalarWhereInput | Prisma.LearningPathScalarWhereInput[]
-  OR?: Prisma.LearningPathScalarWhereInput[]
-  NOT?: Prisma.LearningPathScalarWhereInput | Prisma.LearningPathScalarWhereInput[]
-  id?: Prisma.StringFilter<"LearningPath"> | string
-  slug?: Prisma.StringFilter<"LearningPath"> | string
-  domainId?: Prisma.StringFilter<"LearningPath"> | string
-  name?: Prisma.StringFilter<"LearningPath"> | string
-  tagline?: Prisma.StringNullableFilter<"LearningPath"> | string | null
-  description?: Prisma.StringNullableFilter<"LearningPath"> | string | null
-  level?: Prisma.StringNullableFilter<"LearningPath"> | string | null
-  estimatedMonths?: Prisma.IntNullableFilter<"LearningPath"> | number | null
-  order?: Prisma.IntFilter<"LearningPath"> | number
-}
-
 export type LearningPathCreateWithoutStepsInput = {
   id?: string
   slug: string
@@ -620,6 +742,7 @@ export type LearningPathCreateWithoutStepsInput = {
   estimatedMonths?: number | null
   order?: number
   domain: Prisma.DomainCreateNestedOneWithoutPathsInput
+  owner?: Prisma.UserCreateNestedOneWithoutPathsInput
   userGoals?: Prisma.UserGoalCreateNestedManyWithoutPathInput
 }
 
@@ -627,6 +750,7 @@ export type LearningPathUncheckedCreateWithoutStepsInput = {
   id?: string
   slug: string
   domainId: string
+  ownerId?: string | null
   name: string
   tagline?: string | null
   description?: string | null
@@ -662,6 +786,7 @@ export type LearningPathUpdateWithoutStepsInput = {
   estimatedMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   domain?: Prisma.DomainUpdateOneRequiredWithoutPathsNestedInput
+  owner?: Prisma.UserUpdateOneWithoutPathsNestedInput
   userGoals?: Prisma.UserGoalUpdateManyWithoutPathNestedInput
 }
 
@@ -669,6 +794,7 @@ export type LearningPathUncheckedUpdateWithoutStepsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   domainId?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -688,6 +814,7 @@ export type LearningPathCreateWithoutUserGoalsInput = {
   estimatedMonths?: number | null
   order?: number
   domain: Prisma.DomainCreateNestedOneWithoutPathsInput
+  owner?: Prisma.UserCreateNestedOneWithoutPathsInput
   steps?: Prisma.LearningPathStepCreateNestedManyWithoutPathInput
 }
 
@@ -695,6 +822,7 @@ export type LearningPathUncheckedCreateWithoutUserGoalsInput = {
   id?: string
   slug: string
   domainId: string
+  ownerId?: string | null
   name: string
   tagline?: string | null
   description?: string | null
@@ -730,10 +858,51 @@ export type LearningPathUpdateWithoutUserGoalsInput = {
   estimatedMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   domain?: Prisma.DomainUpdateOneRequiredWithoutPathsNestedInput
+  owner?: Prisma.UserUpdateOneWithoutPathsNestedInput
   steps?: Prisma.LearningPathStepUpdateManyWithoutPathNestedInput
 }
 
 export type LearningPathUncheckedUpdateWithoutUserGoalsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  domainId?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  steps?: Prisma.LearningPathStepUncheckedUpdateManyWithoutPathNestedInput
+}
+
+export type LearningPathCreateManyOwnerInput = {
+  id?: string
+  slug: string
+  domainId: string
+  name: string
+  tagline?: string | null
+  description?: string | null
+  level?: string | null
+  estimatedMonths?: number | null
+  order?: number
+}
+
+export type LearningPathUpdateWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  domain?: Prisma.DomainUpdateOneRequiredWithoutPathsNestedInput
+  steps?: Prisma.LearningPathStepUpdateManyWithoutPathNestedInput
+  userGoals?: Prisma.UserGoalUpdateManyWithoutPathNestedInput
+}
+
+export type LearningPathUncheckedUpdateWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   domainId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -744,11 +913,25 @@ export type LearningPathUncheckedUpdateWithoutUserGoalsInput = {
   estimatedMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   steps?: Prisma.LearningPathStepUncheckedUpdateManyWithoutPathNestedInput
+  userGoals?: Prisma.UserGoalUncheckedUpdateManyWithoutPathNestedInput
+}
+
+export type LearningPathUncheckedUpdateManyWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  domainId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type LearningPathCreateManyDomainInput = {
   id?: string
   slug: string
+  ownerId?: string | null
   name: string
   tagline?: string | null
   description?: string | null
@@ -766,6 +949,7 @@ export type LearningPathUpdateWithoutDomainInput = {
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   estimatedMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  owner?: Prisma.UserUpdateOneWithoutPathsNestedInput
   steps?: Prisma.LearningPathStepUpdateManyWithoutPathNestedInput
   userGoals?: Prisma.UserGoalUpdateManyWithoutPathNestedInput
 }
@@ -773,6 +957,7 @@ export type LearningPathUpdateWithoutDomainInput = {
 export type LearningPathUncheckedUpdateWithoutDomainInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -786,6 +971,7 @@ export type LearningPathUncheckedUpdateWithoutDomainInput = {
 export type LearningPathUncheckedUpdateManyWithoutDomainInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -838,6 +1024,7 @@ export type LearningPathSelect<ExtArgs extends runtime.Types.Extensions.Internal
   id?: boolean
   slug?: boolean
   domainId?: boolean
+  ownerId?: boolean
   name?: boolean
   tagline?: boolean
   description?: boolean
@@ -845,6 +1032,7 @@ export type LearningPathSelect<ExtArgs extends runtime.Types.Extensions.Internal
   estimatedMonths?: boolean
   order?: boolean
   domain?: boolean | Prisma.DomainDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.LearningPath$ownerArgs<ExtArgs>
   steps?: boolean | Prisma.LearningPath$stepsArgs<ExtArgs>
   userGoals?: boolean | Prisma.LearningPath$userGoalsArgs<ExtArgs>
   _count?: boolean | Prisma.LearningPathCountOutputTypeDefaultArgs<ExtArgs>
@@ -854,6 +1042,7 @@ export type LearningPathSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   slug?: boolean
   domainId?: boolean
+  ownerId?: boolean
   name?: boolean
   tagline?: boolean
   description?: boolean
@@ -861,12 +1050,14 @@ export type LearningPathSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   estimatedMonths?: boolean
   order?: boolean
   domain?: boolean | Prisma.DomainDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.LearningPath$ownerArgs<ExtArgs>
 }, ExtArgs["result"]["learningPath"]>
 
 export type LearningPathSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   slug?: boolean
   domainId?: boolean
+  ownerId?: boolean
   name?: boolean
   tagline?: boolean
   description?: boolean
@@ -874,12 +1065,14 @@ export type LearningPathSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   estimatedMonths?: boolean
   order?: boolean
   domain?: boolean | Prisma.DomainDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.LearningPath$ownerArgs<ExtArgs>
 }, ExtArgs["result"]["learningPath"]>
 
 export type LearningPathSelectScalar = {
   id?: boolean
   slug?: boolean
   domainId?: boolean
+  ownerId?: boolean
   name?: boolean
   tagline?: boolean
   description?: boolean
@@ -888,24 +1081,28 @@ export type LearningPathSelectScalar = {
   order?: boolean
 }
 
-export type LearningPathOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "domainId" | "name" | "tagline" | "description" | "level" | "estimatedMonths" | "order", ExtArgs["result"]["learningPath"]>
+export type LearningPathOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "domainId" | "ownerId" | "name" | "tagline" | "description" | "level" | "estimatedMonths" | "order", ExtArgs["result"]["learningPath"]>
 export type LearningPathInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   domain?: boolean | Prisma.DomainDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.LearningPath$ownerArgs<ExtArgs>
   steps?: boolean | Prisma.LearningPath$stepsArgs<ExtArgs>
   userGoals?: boolean | Prisma.LearningPath$userGoalsArgs<ExtArgs>
   _count?: boolean | Prisma.LearningPathCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type LearningPathIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   domain?: boolean | Prisma.DomainDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.LearningPath$ownerArgs<ExtArgs>
 }
 export type LearningPathIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   domain?: boolean | Prisma.DomainDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.LearningPath$ownerArgs<ExtArgs>
 }
 
 export type $LearningPathPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "LearningPath"
   objects: {
     domain: Prisma.$DomainPayload<ExtArgs>
+    owner: Prisma.$UserPayload<ExtArgs> | null
     steps: Prisma.$LearningPathStepPayload<ExtArgs>[]
     userGoals: Prisma.$UserGoalPayload<ExtArgs>[]
   }
@@ -913,6 +1110,7 @@ export type $LearningPathPayload<ExtArgs extends runtime.Types.Extensions.Intern
     id: string
     slug: string
     domainId: string
+    ownerId: string | null
     name: string
     tagline: string | null
     description: string | null
@@ -1314,6 +1512,7 @@ readonly fields: LearningPathFieldRefs;
 export interface Prisma__LearningPathClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   domain<T extends Prisma.DomainDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DomainDefaultArgs<ExtArgs>>): Prisma.Prisma__DomainClient<runtime.Types.Result.GetResult<Prisma.$DomainPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  owner<T extends Prisma.LearningPath$ownerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LearningPath$ownerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   steps<T extends Prisma.LearningPath$stepsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LearningPath$stepsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LearningPathStepPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   userGoals<T extends Prisma.LearningPath$userGoalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LearningPath$userGoalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserGoalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1348,6 +1547,7 @@ export interface LearningPathFieldRefs {
   readonly id: Prisma.FieldRef<"LearningPath", 'String'>
   readonly slug: Prisma.FieldRef<"LearningPath", 'String'>
   readonly domainId: Prisma.FieldRef<"LearningPath", 'String'>
+  readonly ownerId: Prisma.FieldRef<"LearningPath", 'String'>
   readonly name: Prisma.FieldRef<"LearningPath", 'String'>
   readonly tagline: Prisma.FieldRef<"LearningPath", 'String'>
   readonly description: Prisma.FieldRef<"LearningPath", 'String'>
@@ -1750,6 +1950,25 @@ export type LearningPathDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many LearningPaths to delete.
    */
   limit?: number
+}
+
+/**
+ * LearningPath.owner
+ */
+export type LearningPath$ownerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**

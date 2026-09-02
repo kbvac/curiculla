@@ -42,6 +42,7 @@ model User {
   bookmarks   Bookmark[]
   activities  DailyActivity[]
   enrollments ScheduleEnrollment[]
+  paths       LearningPath[]
 }
 
 // Personal weekly schedule — the student follows N courses in parallel,
@@ -314,6 +315,7 @@ model LearningPath {
   id              String  @id @default(cuid())
   slug            String  @unique
   domainId        String
+  ownerId         String? // null = global (official / library), set = personal builder path
   name            String
   tagline         String?
   description     String?
@@ -322,20 +324,24 @@ model LearningPath {
   order           Int     @default(0)
 
   domain    Domain             @relation(fields: [domainId], references: [id])
+  owner     User?              @relation(fields: [ownerId], references: [id])
   steps     LearningPathStep[]
   userGoals UserGoal[]
 
   @@index([domainId])
+  @@index([ownerId])
 }
 
 model LearningPathStep {
-  id         String  @id @default(cuid())
-  pathId     String
-  skillId    String? // null when the step is a catalog course
-  courseId   String? // null when the step is a skill
-  phase      String // FOUNDATIONS | CORE | ADVANCED | SPECIALIZATION | PROJECTS | ...
-  order      Int
-  isRequired Boolean @default(true) // false = "choose one" alternative
+  id          String  @id @default(cuid())
+  pathId      String
+  skillId     String? // null when the step is a catalog course or a custom entry
+  courseId    String? // null when the step is a skill or a custom entry
+  customTitle String? // free-text step created in the personal builder
+  customUrl   String? // optional link for a custom step
+  phase       String // FOUNDATIONS | CORE | ADVANCED | SPECIALIZATION | PROJECTS | ...
+  order       Int
+  isRequired  Boolean @default(true) // false = "choose one" alternative
 
   path    LearningPath @relation(fields: [pathId], references: [id])
   skill   Skill?       @relation(fields: [skillId], references: [id])

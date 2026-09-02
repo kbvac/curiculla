@@ -2770,6 +2770,7 @@ export const LearningPathScalarFieldEnum = {
   id: 'id',
   slug: 'slug',
   domainId: 'domainId',
+  ownerId: 'ownerId',
   name: 'name',
   tagline: 'tagline',
   description: 'description',
@@ -2786,6 +2787,8 @@ export const LearningPathStepScalarFieldEnum = {
   pathId: 'pathId',
   skillId: 'skillId',
   courseId: 'courseId',
+  customTitle: 'customTitle',
+  customUrl: 'customUrl',
   phase: 'phase',
   order: 'order',
   isRequired: 'isRequired'

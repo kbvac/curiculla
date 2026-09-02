@@ -20,8 +20,9 @@ export default async function PathsPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
-      <header className="mb-10">
-        <p className="data-label">Parcours</p>
+      <header className="mb-10 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p className="data-label">Parcours</p>
         <h1 className="mt-1 font-display text-3xl font-bold text-fg">
           Suivre un cursus ou des compétences
         </h1>
@@ -30,6 +31,13 @@ export default async function PathsPage() {
           cours. Les parcours de bibliothèque assemblent des compétences avec les
           meilleures ressources trouvées.
         </p>
+        </div>
+        <a
+          href="/paths/new"
+          className="rounded-sm bg-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-dark"
+        >
+          + Créer mon parcours
+        </a>
       </header>
 
       {/* ── Parcours officiels ─────────────────────────────────────────────── */}

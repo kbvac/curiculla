@@ -1,0 +1,192 @@
+@import "tailwindcss";
+
+/* ─── LearnHigh — « Le Registraire » ─────────────────────────────────────────
+   paper (froid, pas crème) · ink · rule (filets) · crimson (le tampon officiel)
+   viridian (validé). Trois faces: Bricolage Grotesque (titres),
+   IBM Plex Sans (humain), IBM Plex Mono (données de catalogue).
+   Disciplines: mono = uniquement des données (codes, unités, termes).
+   Une seule couleur d'autorité: crimson. */
+
+:root {
+  --bg: #F4F5F7;
+  --bg-card: #FFFFFF;
+  --bg-muted: #EDEEF2;
+  --fg: #16181D;
+  --fg-muted: #5C6068;
+  --fg-faint: #9DA1AA;
+  --border: #D8DBE2;
+  --border-strong: #B9BEC9;
+  --accent: #A4243B;       /* crimson — requis / officiel / marque */
+  --accent-light: #F7E3E7;
+  --accent-dark: #7E1C2F;
+  --success: #2E5E4E;      /* viridian — validé */
+  --success-light: #E3EEEA;
+
+  /* Statuts réduits à 3 états lisibles */
+  --locked: #C6CAD2;       /* verrouillé — gris pâle */
+  --available: #9DA1AA;    /* à faire — encre grise */
+  --in-progress: #A4243B;  /* en cours — crimson */
+  --completed: #2E5E4E;    /* validé — viridian */
+  --mastered: #2E5E4E;
+
+  --nav-height: 3.5rem;
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
+  --color-card: var(--bg-card);
+  --color-muted: var(--bg-muted);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-faint: var(--fg-faint);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-accent-dark: var(--accent-dark);
+  --color-success: var(--success);
+  --color-success-light: var(--success-light);
+  --color-locked: var(--locked);
+  --color-available: var(--available);
+  --color-in-progress: var(--in-progress);
+  --color-completed: var(--completed);
+  --color-mastered: var(--mastered);
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", monospace;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.015em;
+}
+
+/* ─── Statuts ─────────────────────────────────────────────────────────────── */
+
+.status-locked { color: var(--locked); }
+.status-available { color: var(--fg-muted); }
+.status-in-progress { color: var(--accent); }
+.status-completed { color: var(--completed); }
+.status-mastered { color: var(--completed); }
+
+.bg-status-locked { background-color: var(--bg-muted); }
+.bg-status-available { background-color: var(--bg-muted); }
+.bg-status-in-progress { background-color: var(--accent-light); }
+.bg-status-completed { background-color: var(--success-light); }
+.bg-status-mastered { background-color: var(--success-light); }
+
+/* ─── Données de catalogue: la voix mono ──────────────────────────────────── */
+
+.course-code {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  letter-spacing: 0.01em;
+}
+
+.data-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-faint);
+}
+
+/* ─── Progress bar ─────────────────────────────────────────────────────────── */
+
+.progress-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--border);
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+/* ─── Cartes: discret par défaut ──────────────────────────────────────────── */
+
+.card-hover {
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.card-hover:hover {
+  box-shadow: 0 4px 12px rgba(22, 24, 29, 0.06);
+  transform: translateY(-1px);
+}
+
+/* ─── Rail de catalogue (signature) ───────────────────────────────────────── */
+
+.rail-line {
+  position: relative;
+}
+.rail-line::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 22px;
+  bottom: -12px;
+  width: 2px;
+  background: var(--border);
+}
+.rail-line:last-child::before {
+  bottom: 22px;
+}
+
+/* Node carré — la case du plan of study */
+.rail-node {
+  position: absolute;
+  left: 0;
+  top: 18px;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border-strong);
+  background: var(--bg-card);
+  transform: translateX(-7px);
+}
+.rail-node[data-state="in-progress"] { border-color: var(--accent); background: var(--accent-light); }
+.rail-node[data-state="completed"] { border-color: var(--completed); background: var(--completed); }
+.rail-node[data-state="locked"] { border-color: var(--locked); background: var(--bg-muted); }
+
+/* ─── Transcript bar ──────────────────────────────────────────────────────── */
+
+.transcript-segment {
+  flex: 1;
+  height: 10px;
+  background: var(--bg-muted);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.transcript-segment + .transcript-segment {
+  border-left: none;
+}
+.transcript-fill {
+  height: 100%;
+  background: var(--completed);
+  transition: width 0.5s ease;
+}
+
+/* ─── Focus visible ───────────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ─── Motion réduite ──────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

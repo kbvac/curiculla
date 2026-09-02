@@ -1,0 +1,483 @@
+// Global University Learning Hub — data model
+//
+// Academic hierarchy:
+//   University → Degree → Curriculum → Course → Subject → Topic → Skill → Resource
+//   Domain → Subject → Topic → Skill (curriculum graph used by Learning Paths)
+//   Skill → Prerequisites (self-relation, dependency graph)
+//   LearningPath → LearningPathStep → Skill
+//
+// User side:
+//   User → UserGoal, UserSkill, UserProgress, AssessmentAttempt, Bookmark, DailyActivity
+//
+// SQLite: no native enums — status fields are strings constrained by
+// constants in src/lib/constants.ts.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ─── Users & auth ────────────────────────────────────────────────────────────
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  passwordHash String? // null for OAuth-only accounts
+  googleId     String?  @unique
+  universityId String? // home university chosen during onboarding
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  university University? @relation(fields: [universityId], references: [id])
+  sessions    Session[]
+  goals       UserGoal[]
+  skills      UserSkill[]
+  progress    UserProgress[]
+  attempts    AssessmentAttempt[]
+  bookmarks   Bookmark[]
+  activities  DailyActivity[]
+  enrollments ScheduleEnrollment[]
+}
+
+// Personal weekly schedule — the student follows N courses in parallel,
+// each anchored to their own start date ("week 1 = my first week").
+model ScheduleEnrollment {
+  id        String   @id @default(cuid())
+  userId    String
+  courseId  String
+  startDate DateTime // the user's week 1 begins here
+  status    String   @default("ACTIVE") // ACTIVE | PAUSED | COMPLETED | ABANDONED
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id])
+
+  @@unique([userId, courseId])
+  @@index([userId])
+}
+
+model Session {
+  id        String   @id // opaque random token
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// ─── Universities, degrees, curricula ───────────────────────────────────────
+
+model University {
+  id         String  @id @default(cuid())
+  slug       String  @unique
+  name       String
+  country    String?
+  website    String?
+  reputation Int? // 0–100 internal reputation score
+  createdAt  DateTime @default(now())
+
+  degrees    Degree[]
+  faculties  Faculty[]
+  courses    Course[]
+  resources  Resource[]
+  users      User[]
+}
+
+model Faculty {
+  id           String  @id @default(cuid())
+  universityId String
+  name         String
+
+  university University @relation(fields: [universityId], references: [id])
+  degrees    Degree[]
+
+  @@unique([universityId, name])
+}
+
+model Degree {
+  id           String @id @default(cuid())
+  slug         String @unique
+  name         String
+  level        String // BACHELOR | MASTER | CERTIFICATE
+  universityId String
+  facultyId    String?
+
+  university University @relation(fields: [universityId], references: [id])
+  faculty    Faculty?   @relation(fields: [facultyId], references: [id])
+  curricula  Curriculum[]
+
+  @@index([universityId])
+}
+
+model Curriculum {
+  id       String  @id @default(cuid())
+  degreeId String
+  name     String? // version / cohort label
+  source   String? // URL of the official program page
+
+  degree  Degree             @relation(fields: [degreeId], references: [id])
+  courses CurriculumCourse[]
+
+  @@index([degreeId])
+}
+
+model CurriculumCourse {
+  id           String @id @default(cuid())
+  curriculumId String
+  courseId     String
+  year         Int?
+  semester     Int?
+  order        Int    @default(0)
+
+  curriculum Curriculum @relation(fields: [curriculumId], references: [id])
+  course     Course     @relation(fields: [courseId], references: [id])
+
+  @@unique([curriculumId, courseId])
+  @@index([courseId])
+}
+
+// ─── Academic content graph ──────────────────────────────────────────────────
+
+model Domain {
+  id          String  @id @default(cuid())
+  slug        String  @unique
+  name        String
+  description String?
+  icon        String? // UI icon key
+  order       Int     @default(0)
+
+  subjects Subject[]
+  paths    LearningPath[]
+}
+
+model Subject {
+  id          String  @id @default(cuid())
+  domainId    String
+  slug        String  @unique
+  name        String
+  description String?
+  order       Int     @default(0)
+
+  domain  Domain   @relation(fields: [domainId], references: [id])
+  topics  Topic[]
+  courses Course[]
+
+  @@index([domainId])
+}
+
+model Topic {
+  id          String  @id @default(cuid())
+  subjectId   String
+  slug        String  @unique
+  name        String
+  description String?
+  order       Int     @default(0)
+
+  subject Subject @relation(fields: [subjectId], references: [id])
+  skills  Skill[]
+
+  @@index([subjectId])
+}
+
+model Skill {
+  id          String  @id @default(cuid())
+  topicId     String
+  slug        String  @unique
+  name        String
+  description String?
+  difficulty  Int? // 1–5
+  order       Int     @default(0)
+
+  topic Topic @relation(fields: [topicId], references: [id])
+
+  prerequisites SkillPrerequisite[] @relation("SkillPrerequisites")
+  unlocks       SkillPrerequisite[] @relation("SkillPrerequisitesBack")
+  resources     ResourceSkill[]
+  pathSteps     LearningPathStep[]
+  userSkills    UserSkill[]
+  assessments   Assessment[]
+  exercises     Exercise[]
+
+  @@index([topicId])
+}
+
+model SkillPrerequisite {
+  skillId       String
+  prerequisiteId String
+  skill       Skill @relation("SkillPrerequisites", fields: [skillId], references: [id])
+  prerequisite Skill @relation("SkillPrerequisitesBack", fields: [prerequisiteId], references: [id])
+
+  @@id([skillId, prerequisiteId])
+  @@index([prerequisiteId])
+}
+
+model Course {
+  id           String  @id @default(cuid())
+  slug         String  @unique
+  code         String? // "6.0001"
+  title        String
+  description  String?
+  level        String? // BEGINNER | INTERMEDIATE | ADVANCED
+  catalogLevel String? // LOWER_DIVISION | UPPER_DIVISION | GRADUATE
+  units        Int?    // credit units, e.g. 4
+  term         String? // "wi24", "sp23"
+  year         Int?
+  url          String?
+  universityId String?
+  subjectId    String?
+
+  university University?       @relation(fields: [universityId], references: [id])
+  subject    Subject?          @relation(fields: [subjectId], references: [id])
+  entries    CurriculumCourse[]
+  resources  Resource[]
+  enrollments ScheduleEnrollment[]
+
+  prerequisites CoursePrerequisite[] @relation("CoursePrerequisites")
+  unlocks       CoursePrerequisite[] @relation("CoursePrerequisitesBack")
+  pathSteps     LearningPathStep[]
+
+  @@index([universityId])
+  @@index([subjectId])
+}
+
+model CoursePrerequisite {
+  courseId       String
+  prerequisiteId String
+
+  course       Course @relation("CoursePrerequisites", fields: [courseId], references: [id])
+  prerequisite Course @relation("CoursePrerequisitesBack", fields: [prerequisiteId], references: [id])
+
+  @@id([courseId, prerequisiteId])
+  @@index([prerequisiteId])
+}
+
+model Resource {
+  id           String  @id @default(cuid())
+  slug         String  @unique
+  title        String
+  type         String // COURSE | LECTURE | DISCUSSION | LECTURE_NOTES | BOOK | EXERCISE | PROBLEM_SET | EXAM | PROJECT | LAB | SYLLABUS | VIDEO | DOCUMENTATION
+  url          String
+  description  String?
+  instructor   String?
+  language     String  @default("en")
+  level        String? // BEGINNER | INTERMEDIATE | ADVANCED
+  durationHours Float?
+  year         Int?
+  certificate  Boolean @default(false)
+  qualityScore Float? // 0–100
+  qualityMeta  String? // JSON { reasons: string[] } — why this resource is recommended
+  verified     Boolean @default(false) // URL manually verified
+  createdAt    DateTime @default(now())
+
+  // Weekly schedule position (from the official podcast page)
+  term          String? // "sp24", "wi24" — the term this recording set belongs to
+  weekNumber    Int?    // 1..10 — which week of the quarter
+  lectureNumber Int?    // recording index on the platform
+  sessionKind   String? // LECTURE | DISCUSSION
+  dateLabel     String? // "Mon 4/1" — official label
+
+  universityId String?
+  courseId      String?
+
+  university University?    @relation(fields: [universityId], references: [id])
+  course     Course?        @relation(fields: [courseId], references: [id])
+  skills     ResourceSkill[]
+  progress   UserProgress[]
+
+  @@index([universityId])
+  @@index([type])
+  @@index([courseId, weekNumber])
+}
+
+model ResourceSkill {
+  resourceId String
+  skillId    String
+  isPrimary  Boolean @default(false) // recommended resource for the skill
+
+  resource Resource @relation(fields: [resourceId], references: [id])
+  skill    Skill    @relation(fields: [skillId], references: [id])
+
+  @@id([resourceId, skillId])
+  @@index([skillId])
+}
+
+// ─── Learning paths ──────────────────────────────────────────────────────────
+
+model LearningPath {
+  id              String  @id @default(cuid())
+  slug            String  @unique
+  domainId        String
+  name            String
+  tagline         String?
+  description     String?
+  level           String? // BEGINNER | INTERMEDIATE | ADVANCED
+  estimatedMonths Int?
+  order           Int     @default(0)
+
+  domain    Domain             @relation(fields: [domainId], references: [id])
+  steps     LearningPathStep[]
+  userGoals UserGoal[]
+
+  @@index([domainId])
+}
+
+model LearningPathStep {
+  id         String  @id @default(cuid())
+  pathId     String
+  skillId    String? // null when the step is a catalog course
+  courseId   String? // null when the step is a skill
+  phase      String // FOUNDATIONS | CORE | ADVANCED | SPECIALIZATION | PROJECTS | ...
+  order      Int
+  isRequired Boolean @default(true) // false = "choose one" alternative
+
+  path    LearningPath @relation(fields: [pathId], references: [id])
+  skill   Skill?       @relation(fields: [skillId], references: [id])
+  course  Course?      @relation(fields: [courseId], references: [id])
+
+  @@unique([pathId, skillId])
+  @@unique([pathId, courseId])
+  @@index([skillId])
+  @@index([courseId])
+}
+
+// ─── User learning state ─────────────────────────────────────────────────────
+
+model UserGoal {
+  id        String   @id @default(cuid())
+  userId    String
+  pathId    String
+  status    String   @default("ACTIVE") // ACTIVE | PAUSED | COMPLETED | ABANDONED
+  createdAt DateTime @default(now())
+
+  user User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  path LearningPath @relation(fields: [pathId], references: [id])
+
+  @@unique([userId, pathId])
+  @@index([userId])
+}
+
+model UserSkill {
+  id           String   @id @default(cuid())
+  userId       String
+  skillId      String
+  status       String   @default("AVAILABLE") // LOCKED | AVAILABLE | IN_PROGRESS | COMPLETED | MASTERED
+  mastery      Float    @default(0) // 0–100 estimated mastery
+  selfDeclared Boolean  @default(false) // declared as known via the Skill Gap feature
+  updatedAt    DateTime @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skill Skill @relation(fields: [skillId], references: [id])
+
+  @@unique([userId, skillId])
+  @@index([userId])
+}
+
+model UserProgress {
+  id             String    @id @default(cuid())
+  userId         String
+  resourceId     String
+  status         String    @default("IN_PROGRESS") // NOT_STARTED | IN_PROGRESS | COMPLETED
+  percent        Float     @default(0) // 0–100
+  lastAccessedAt DateTime  @default(now())
+  completedAt    DateTime?
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resource Resource @relation(fields: [resourceId], references: [id])
+
+  @@unique([userId, resourceId])
+  @@index([userId])
+}
+
+// ─── Assessment ──────────────────────────────────────────────────────────────
+
+model Assessment {
+  id          String  @id @default(cuid())
+  skillId     String
+  type        String // QUIZ | EXAM | PROJECT
+  title       String
+  description String?
+  passScore   Float   @default(70) // 0–100
+
+  skill     Skill               @relation(fields: [skillId], references: [id])
+  questions Question[]
+  attempts  AssessmentAttempt[]
+
+  @@index([skillId])
+}
+
+model Question {
+  id           String  @id @default(cuid())
+  assessmentId String
+  prompt       String
+  choices      String // JSON array of strings
+  answerIndex  Int
+  explanation  String?
+  order        Int     @default(0)
+
+  assessment Assessment @relation(fields: [assessmentId], references: [id])
+
+  @@index([assessmentId])
+}
+
+model AssessmentAttempt {
+  id           String   @id @default(cuid())
+  userId       String
+  assessmentId String
+  score        Float // 0–100
+  passed       Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assessment Assessment @relation(fields: [assessmentId], references: [id])
+
+  @@index([userId])
+  @@index([assessmentId])
+}
+
+model Exercise {
+  id          String  @id @default(cuid())
+  skillId     String
+  title       String
+  description String?
+  url         String?
+  order       Int     @default(0)
+
+  skill Skill @relation(fields: [skillId], references: [id])
+
+  @@index([skillId])
+}
+
+// ─── Bookmarks & activity ────────────────────────────────────────────────────
+
+model Bookmark {
+  id         String   @id @default(cuid())
+  userId     String
+  targetType String // SKILL | RESOURCE | LEARNING_PATH | UNIVERSITY
+  targetId   String // slug of the target
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, targetType, targetId])
+  @@index([userId])
+}
+
+model DailyActivity {
+  id      String   @id @default(cuid())
+  userId  String
+  date    DateTime // UTC day (midnight)
+  minutes Int      @default(0)
+  actions Int      @default(0)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+  @@index([userId])
+}

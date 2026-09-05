@@ -1,15 +1,28 @@
 import { z } from "zod";
 import { requireUser } from "@/lib/auth";
 import { handle, json, badRequest } from "@/lib/http";
-import { enroll, unenroll, getScheduleView } from "@/lib/schedule";
+import { enroll, unenroll, getPersonalPlan } from "@/lib/schedule";
 
 /**
- * GET /api/schedule — the user's weekly schedule view (all enrolled courses).
+ * GET /api/schedule — personal plan: due sessions, next 7 days, per-course
+ * progress, all distributed on the learner's availability.
  */
 export const GET = handle(async () => {
   const user = await requireUser();
-  const view = await getScheduleView(user.id);
-  return json(view);
+  const plan = await getPersonalPlan(user.id);
+  return json({
+    ...plan,
+    today: plan.today.toISOString(),
+    upcoming: plan.upcoming.map((u) => ({
+      date: u.date.toISOString(),
+      sessions: u.sessions.map((s) => ({ ...s, date: s.date.toISOString() })),
+    })),
+    due: plan.due.map((s) => ({ ...s, date: s.date.toISOString() })),
+    courses: plan.courses.map((c) => ({
+      ...c,
+      sessions: c.sessions.map((s) => ({ ...s, date: s.date.toISOString() })),
+    })),
+  });
 });
 
 const enrollSchema = z.object({

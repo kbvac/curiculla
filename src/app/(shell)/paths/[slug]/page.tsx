@@ -5,8 +5,24 @@ import { getCurrentUser } from "@/lib/auth";
 import { getPathProgress } from "@/lib/skills";
 import { SkillStatusBadge } from "@/components/SkillStatusBadge";
 import { SetGoalButton } from "@/components/SetGoalButton";
+import { CloneButton } from "@/components/CloneButton";
 
 type StepStatus = "LOCKED" | "AVAILABLE" | "IN_PROGRESS" | "COMPLETED" | "MASTERED";
+
+/** Maps a skill status to the rail node's kebab-case state attribute. */
+function nodeState(status: StepStatus): string {
+  switch (status) {
+    case "IN_PROGRESS":
+      return "in-progress";
+    case "COMPLETED":
+    case "MASTERED":
+      return "completed";
+    case "LOCKED":
+      return "locked";
+    default:
+      return "available";
+  }
+}
 
 async function loadPath(slug: string) {
   return db.learningPath.findUnique({
@@ -60,6 +76,7 @@ export default async function PathDetailPage({ params }: { params: Promise<{ slu
   type Block =
     | { kind: "course"; n: number; course: CourseStep }
     | { kind: "skill"; n: number; skill: SkillStep }
+    | { kind: "custom"; n: number; title: string; url: string | null }
     | { kind: "choice"; n: number; courses: CourseStep[] };
 
   const phases = new Map<string, Block[]>();
@@ -85,6 +102,11 @@ export default async function PathDetailPage({ params }: { params: Promise<{ slu
     } else if (step.skill) {
       n++;
       blocks.push({ kind: "skill", n, skill: step.skill });
+    } else if (step.customTitle) {
+      // Free entry from the personal builder: always visible, never merged
+      // into a "choice" group (it is not an alternative).
+      n++;
+      blocks.push({ kind: "custom", n, title: step.customTitle, url: step.customUrl });
     }
 
     phases.set(step.phase, blocks);
@@ -141,6 +163,7 @@ export default async function PathDetailPage({ params }: { params: Promise<{ slu
                   const st = progress.statuses.find((s) => s.slug === b.skill.slug);
                   return st?.status === "COMPLETED" || st?.status === "MASTERED";
                 }
+                if (b.kind !== "choice") return false; // custom entries are not trackable
                 return b.courses.some(
                   (c) => progress.courseStatuses.find((cs) => cs.slug === c.slug)?.status === "COMPLETED",
                 );
@@ -169,7 +192,7 @@ export default async function PathDetailPage({ params }: { params: Promise<{ slu
       {!user && (
         <div className="mb-10 border-l-2 border-accent bg-accent-light/40 py-3 pl-4">
           <p className="text-sm text-accent-dark">
-            <Link href="/login" className="font-medium underline">Log in</Link> pour suivre ta
+            <Link href="/login" className="font-medium underline">Connexion</Link> pour suivre ta
             progression et fixer ce parcours comme objectif.
           </p>
         </div>
@@ -177,6 +200,22 @@ export default async function PathDetailPage({ params }: { params: Promise<{ slu
       {user && !hasGoal && (
         <div className="mb-10">
           <SetGoalButton pathSlug={slug} />
+        </div>
+      )}
+
+      {/* Owner / clone actions */}
+      {user && (
+        <div className="mb-10 flex flex-wrap items-center gap-3">
+          {path.ownerId === user.id ? (
+            <Link
+              href={`/paths/${slug}/edit`}
+              className="btn-primary"
+            >
+              ✎ Modifier mon parcours
+            </Link>
+          ) : (
+            <CloneButton slug={slug} name={path.name} />
+          )}
         </div>
       )}
 
@@ -190,6 +229,7 @@ export default async function PathDetailPage({ params }: { params: Promise<{ slu
               const st = progress?.statuses.find((s) => s.slug === b.skill.slug);
               return st?.status === "COMPLETED" || st?.status === "MASTERED";
             }
+            if (b.kind !== "choice") return false; // custom entries are not trackable
             return b.courses.some(
               (c) => progress?.courseStatuses.find((cs) => cs.slug === c.slug)?.status === "COMPLETED",
             );
@@ -219,7 +259,7 @@ export default async function PathDetailPage({ params }: { params: Promise<{ slu
 
                     return (
                       <div key={block.course.slug} className="rail-line relative pl-7">
-                        <div className="rail-node" data-state={status.toLowerCase()} />
+                        <div className="rail-node" data-state={nodeState(status)} />
                         <CourseCard
                           course={block.course}
                           number={block.n}
@@ -308,6 +348,37 @@ export default async function PathDetailPage({ params }: { params: Promise<{ slu
                     );
                   }
 
+                  /* ── Custom entry (personal builder) ── */
+                  if (block.kind === "custom") {
+                    return (
+                      <div key={`custom-${block.n}`} className="rail-line relative pl-7">
+                        <div className="rail-node" data-state="available" />
+                        <div className="rounded border border-border bg-card p-4">
+                          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                            <span className="font-mono text-xs font-semibold text-fg-muted">
+                              {String(block.n).padStart(2, "0")}
+                            </span>
+                            <span className="font-mono text-xs font-bold uppercase tracking-wider text-fg-faint">
+                              lien libre
+                            </span>
+                            {block.url ? (
+                              <a
+                                href={block.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-medium text-accent hover:text-accent-dark"
+                              >
+                                {block.title} ↗
+                              </a>
+                            ) : (
+                              <span className="font-medium text-fg">{block.title}</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+
                   /* ── Skill ── */
                   const skill = block.skill;
                   const st = progress?.statuses.find((s) => s.slug === skill.slug);
@@ -316,7 +387,7 @@ export default async function PathDetailPage({ params }: { params: Promise<{ slu
 
                   return (
                     <div key={block.skill.slug} className="rail-line relative pl-7">
-                      <div className="rail-node" data-state={status.toLowerCase()} />
+                      <div className="rail-node" data-state={nodeState(status)} />
                       <Link
                         href={`/skills/${skill.slug}`}
                         className={`block rounded border p-4 transition-all bg-card ${

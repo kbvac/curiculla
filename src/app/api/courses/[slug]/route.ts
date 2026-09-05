@@ -54,3 +54,4 @@ export const GET = handle(
     return json(course);
   },
 );
+

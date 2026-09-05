@@ -100,7 +100,7 @@ const COURSE_CODE = /[A-Z]{2,5}\s\d{1,3}[A-Z]{0,2}/g;
 
 // ─── Course catalog parser ─────────────────────────────────────────────────────
 
-const COURSE_HEADER = /^([A-Z]{2,5}\s\d{1,3}[A-Z]{0,2})\.\s+(.+?)\s+\((\d+(?:–\d+)?)\)\s*$/;
+const COURSE_HEADER = /^([A-Z]{2,5}\s\d{1,3}[A-Z]{0,2})\.\s+(.+?)\s+\((\d+(?:\s*(?:–|-|or)\s*\d+)?)\)\s*$/;
 
 function parsePrerequisites(description: string): string[] {
   const match = description.match(/Prerequisites?:\s*(.+?)(?:\.\s|$)/i);

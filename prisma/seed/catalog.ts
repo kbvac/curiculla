@@ -100,6 +100,40 @@ async function cleanInvalidCatalog() {
     await prisma.curriculum.deleteMany({ where: { id: { in: invalidCurriculumIds } } });
   }
   console.log(`   ✓ Draft curricula purged: ${invalidCurriculumIds.length} (kept: "Catalog ${CATALOG_YEAR}")`);
+
+  // Only UCSD is a valid university for now — other universities are added
+  // fac par fac with their own adapter, once validated.
+  const otherUniversities = await prisma.university.findMany({
+    where: { slug: { not: "ucsd" } },
+    select: { id: true, slug: true },
+  });
+  for (const u of otherUniversities) {
+    await prisma.user.updateMany({
+      where: { universityId: u.id },
+      data: { universityId: null },
+    });
+    await prisma.university.delete({ where: { id: u.id } });
+  }
+  console.log(`   ✓ Universities purged: ${otherUniversities.length} (kept: ucsd)`);
+
+  // Only the official UCSD path + user-owned paths are valid programs.
+  const invalidPaths = await prisma.learningPath.findMany({
+    where: {
+      slug: { not: "ucsd-bs-computer-science" },
+      ownerId: null,
+    },
+    select: { id: true, slug: true },
+  });
+  const invalidPathIds = invalidPaths.map((p) => p.id);
+  if (invalidPathIds.length > 0) {
+    await prisma.learningPathStep.deleteMany({ where: { pathId: { in: invalidPathIds } } });
+    await prisma.userGoal.deleteMany({ where: { pathId: { in: invalidPathIds } } });
+    await prisma.bookmark.deleteMany({
+      where: { targetType: "LEARNING_PATH", targetId: { in: invalidPaths.map((p) => p.slug) } },
+    });
+    await prisma.learningPath.deleteMany({ where: { id: { in: invalidPathIds } } });
+  }
+  console.log(`   ✓ Library paths purged: ${invalidPathIds.length} (kept: official UCSD + personal)`);
 }
 
 // ─── 3. Library (verified official resources) ──────────────────────────────────

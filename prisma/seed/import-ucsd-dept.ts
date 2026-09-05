@@ -21,13 +21,13 @@ const dbPath = path.resolve(process.cwd(), "prisma/dev.db");
 const adapter = new PrismaBetterSqlite3({ url: `file:${dbPath}` });
 const prisma = new PrismaClient({ adapter });
 
-// Seminars / independent study / special studies — not part of the coherent core
-const EXCLUDED_NUMBERS = new Set([87, 90, 91, 92, 95, 99]);
+// Seul le graduate (numéros >= 200) est exclu : tout le programme undergrad
+// officiel — y compris séminaires (87/90/91/99) et special studies (190-199)
+// — fait partie du catalogue de référence 2022–23.
 function isNoise(code: string): boolean {
   const m = code.match(/\d+/);
   if (!m) return true;
-  const n = parseInt(m[0], 10);
-  return n >= 190 || EXCLUDED_NUMBERS.has(n);
+  return parseInt(m[0], 10) >= 200;
 }
 
 
@@ -66,7 +66,7 @@ export async function importUcsdDepartment(dept: string, catalogYear?: string) {
   const university = await prisma.university.findUnique({ where: { slug: "ucsd" } });
   if (!university) throw new Error("University 'ucsd' not found — run base seed first.");
 
-  console.log(`📚 Catalog parsed: ${parsed.length} courses (${excluded} excluded as seminars/special studies)`);
+  console.log(`📚 Catalog parsed: ${parsed.length} courses (${excluded} graduate courses excluded, undergrad fully kept)`);
 
   const courseIdByCode = new Map<string, string>();
   let created = 0;
@@ -215,10 +215,17 @@ export async function importUcsdDepartment(dept: string, catalogYear?: string) {
       },
     });
 
-    // Clean previous steps (official structure replaces any hand-built one)
-    await prisma.learningPathStep.deleteMany({ where: { pathId: path.id } });
-
-    let order = 0;
+    // Rebuild official steps only — MANUAL steps (hand-added enrichments)
+    // are preserved and official steps continue after them.
+    await prisma.learningPathStep.deleteMany({
+      where: { pathId: path.id, origin: "IMPORT" },
+    });
+    const maxStep = await prisma.learningPathStep.findFirst({
+      where: { pathId: path.id },
+      orderBy: { order: "desc" },
+      select: { order: true },
+    });
+    let order = (maxStep?.order ?? -1) + 1;
     const missing = new Set<string>();
     const program = primary.program;
 
@@ -235,7 +242,7 @@ export async function importUcsdDepartment(dept: string, catalogYear?: string) {
       });
       if (already) return;
       await prisma.learningPathStep.create({
-        data: { pathId: path.id, courseId, phase, order, isRequired },
+        data: { pathId: path.id, courseId, phase, order, isRequired, origin: "IMPORT" },
       });
       order++;
     };

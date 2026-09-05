@@ -128,13 +128,13 @@ export async function DailyMission({ userId }: { userId: string }) {
     <div className="rounded-lg border border-accent/30 bg-accent-light/20 p-6">
       <div className="flex items-center justify-between">
         <div>
-          <span className="text-xs font-medium text-accent-dark">TODAY&apos;S MISSION</span>
+          <span className="text-xs font-medium text-accent-dark">MISSION DU JOUR</span>
           <h2 className="mt-1 font-display text-lg font-semibold text-fg">{activeGoal.path.name}</h2>
         </div>
         {activity && (
           <div className="text-right text-sm text-fg-muted">
             <div>{activity.actions} actions</div>
-            <div>{activity.minutes} min today</div>
+            <div>{activity.minutes} min aujourd&apos;hui</div>
           </div>
         )}
       </div>
@@ -152,7 +152,11 @@ export async function DailyMission({ userId }: { userId: string }) {
             </span>
             <div className="flex-1 min-w-0">
               <Link
-                href={`/skills/${mission.skillSlug}`}
+                href={
+                  (mission as { kind?: string }).kind === "course"
+                    ? `/courses/${mission.skillSlug}`
+                    : `/skills/${mission.skillSlug}`
+                }
                 className="text-sm font-medium text-fg hover:text-accent transition-colors"
               >
                 {mission.skillName}
@@ -170,7 +174,7 @@ export async function DailyMission({ userId }: { userId: string }) {
                   rel="noopener noreferrer"
                   className="ml-2 text-xs font-medium text-accent hover:text-accent-dark transition-colors"
                 >
-                  Start
+                  Ouvrir
                 </a>
               )}
             </div>
@@ -179,8 +183,8 @@ export async function DailyMission({ userId }: { userId: string }) {
       </div>
 
       <div className="mt-4 flex items-center justify-between text-sm text-fg-muted">
-        <span>{completedCount}/{deduped.length} tasks</span>
-        <span>~{totalEstimated} minutes</span>
+        <span>{completedCount}/{deduped.length} tâches</span>
+        <span>~{totalEstimated} min</span>
       </div>
     </div>
   );

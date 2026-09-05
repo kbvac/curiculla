@@ -38,6 +38,11 @@ export const POST = handle(
         phase: z.string().max(40).default("PERSO"),
       }),
       z.object({
+        kind: z.literal("course"),
+        courseId: z.string().min(1),
+        phase: z.string().max(40).default("PERSO"),
+      }),
+      z.object({
         kind: z.literal("custom"),
         title: z.string().min(2).max(200),
         url: z.string().url().optional(),
@@ -48,6 +53,27 @@ export const POST = handle(
     if (!parsed.success) return badRequest("Étape invalide");
 
     const order = await nextOrder(owned.id);
+
+    if (parsed.data.kind === "course") {
+      const course = await db.course.findUnique({ where: { id: parsed.data.courseId } });
+      if (!course) return badRequest("Cours inconnu");
+      const dup = await db.learningPathStep.findFirst({
+        where: { pathId: owned.id, courseId: course.id },
+        select: { id: true },
+      });
+      if (dup) return badRequest("Ce cours est déjà dans le parcours");
+      const step = await db.learningPathStep.create({
+        data: {
+          pathId: owned.id,
+          courseId: course.id,
+          phase: parsed.data.phase,
+          order,
+          isRequired: true,
+        },
+        include: { course: { select: { slug: true, code: true, title: true } } },
+      });
+      return json(step, { status: 201 });
+    }
 
     if (parsed.data.kind === "skill") {
       const skill = await db.skill.findUnique({ where: { id: parsed.data.skillId } });

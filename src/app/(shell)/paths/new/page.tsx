@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 
 type Domain = { slug: string; name: string };
+type OfficialPath = { slug: string; name: string };
 
 export default function NewPathPage() {
   const router = useRouter();
@@ -11,6 +12,8 @@ export default function NewPathPage() {
   const [tagline, setTagline] = useState("");
   const [domains, setDomains] = useState<Domain[]>([]);
   const [domainSlug, setDomainSlug] = useState("computer-science");
+  const [official, setOfficial] = useState<OfficialPath[]>([]);
+  const [cloneFrom, setCloneFrom] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const loaded = useRef(false);
@@ -22,6 +25,16 @@ export default function NewPathPage() {
       .then((r) => r.json())
       .then((d) => setDomains(d.data ?? []))
       .catch(() => setDomains([]));
+    fetch("/api/paths")
+      .then((r) => r.json())
+      .then((d) =>
+        setOfficial(
+          (d.data ?? [])
+            .filter((p: { slug: string }) => /^(ucsd|mit|stanford|berkeley|harvard|yale|cmu)-/.test(p.slug))
+            .map((p: OfficialPath) => ({ slug: p.slug, name: p.name })),
+        ),
+      )
+      .catch(() => setOfficial([]));
   }, []);
 
   const create = async (e: React.FormEvent) => {
@@ -32,7 +45,12 @@ export default function NewPathPage() {
       const res = await fetch("/api/my/paths", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, tagline: tagline || undefined, domainSlug }),
+        body: JSON.stringify({
+          name,
+          tagline: tagline || undefined,
+          domainSlug,
+          ...(cloneFrom ? { cloneFrom } : {}),
+        }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -46,7 +64,7 @@ export default function NewPathPage() {
   };
 
   const input =
-    "mt-1 block w-full rounded-sm border border-border bg-card px-3 py-2 text-sm text-fg outline-none focus:border-accent";
+    "field";
 
   return (
     <div className="mx-auto max-w-md px-4 py-12">
@@ -93,12 +111,26 @@ export default function NewPathPage() {
             ))}
           </select>
         </div>
+        <div>
+          <label className="block text-sm font-medium text-fg">
+            Partir d&apos;un parcours existant{" "}
+            <span className="font-normal text-fg-faint">(optionnel — tout sera copié, puis modifiable)</span>
+          </label>
+          <select value={cloneFrom} onChange={(e) => setCloneFrom(e.target.value)} className={input}>
+            <option value="">Page blanche</option>
+            {official.map((p) => (
+              <option key={p.slug} value={p.slug}>
+                {p.name}
+              </option>
+            ))}
+          </select>
+        </div>
         <button
           type="submit"
           disabled={loading || !name}
-          className="w-full rounded-sm bg-accent py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent-dark disabled:opacity-50"
+          className="btn-primary w-full"
         >
-          {loading ? "Création…" : "Créer et commencer"}
+          {loading ? "Création…" : cloneFrom ? "Dupliquer et éditer" : "Créer et commencer"}
         </button>
       </form>
     </div>

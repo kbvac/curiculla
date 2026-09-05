@@ -36,8 +36,16 @@ export const POST = handle(async (request: Request) => {
     universityId = university.id;
   }
 
+  const userCount = await db.user.count();
   const user = await db.user.create({
-    data: { email, name, passwordHash: hashPassword(password), universityId },
+    data: {
+      email,
+      name,
+      passwordHash: hashPassword(password),
+      universityId,
+      // Bootstrap: the very first account owns the platform
+      role: userCount === 0 ? "ADMIN" : "USER",
+    },
   });
 
   await createSession(user.id);

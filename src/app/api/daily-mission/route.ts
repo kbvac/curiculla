@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { getPathProgress } from "@/lib/skills";
+import { getDueSessions } from "@/lib/schedule";
 import { handle, json } from "@/lib/http";
 
 export const GET = handle(async () => {
@@ -19,34 +20,12 @@ export const GET = handle(async () => {
     return json({ missions: [], streak: 0 });
   }
 
-  // ── Priority 1: this week's unchecked sessions from the weekly schedule ────
-  // The weekly schedule is the most concrete "what to do now" the product has.
-  const enrollments = await db.scheduleEnrollment.findMany({
-    where: { userId: user.id, status: "ACTIVE" },
-    include: {
-      course: {
-        select: {
-          slug: true,
-          code: true,
-          title: true,
-          resources: {
-            where: { weekNumber: { not: null } },
-            orderBy: [{ weekNumber: "asc" }, { lectureNumber: "asc" }],
-            select: {
-              slug: true,
-              title: true,
-              url: true,
-              weekNumber: true,
-              lectureNumber: true,
-              progress: { where: { userId: user.id }, select: { status: true } },
-            },
-          },
-        },
-      },
-    },
-  });
+  // ── Priority 1: sessions dues du plan personnel (distribuées sur les
+  // disponibilités de l'apprenant). C'est le "quoi faire maintenant" concret.
+  const due = await getDueSessions(user.id, 3);
 
   const missions: Array<{
+    kind: "skill" | "course";
     skillSlug: string;
     skillName: string;
     resourceTitle: string | null;
@@ -54,33 +33,16 @@ export const GET = handle(async () => {
     type: string;
     estimatedMinutes: number;
     completed: boolean;
-  }> = [];
-
-  const MS_WEEK = 7 * 24 * 60 * 60 * 1000;
-  for (const enrollment of enrollments) {
-    if (missions.length >= 3) break;
-    const { course } = enrollment;
-    const maxWeek = Math.max(0, ...course.resources.map((r) => r.weekNumber ?? 0));
-    if (maxWeek === 0) continue;
-    const elapsed =
-      Math.floor((Date.now() - enrollment.startDate.getTime()) / MS_WEEK) + 1;
-    const week = Math.min(Math.max(elapsed, 1), maxWeek);
-
-    for (const r of course.resources) {
-      if (missions.length >= 3) break;
-      if (r.weekNumber !== week) continue;
-      if (r.progress[0]?.status === "COMPLETED") continue;
-      missions.push({
-        skillSlug: course.slug,
-        skillName: `${course.code} — semaine ${week}`,
-        resourceTitle: r.title,
-        resourceUrl: r.url,
-        type: "LECTURE",
-        estimatedMinutes: 50,
-        completed: false,
-      });
-    }
-  }
+  }> = due.map((s) => ({
+    kind: "course" as const,
+    skillSlug: s.courseSlug,
+    skillName: `${s.code} — ${s.date.toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "short" })}`,
+    resourceTitle: s.title,
+    resourceUrl: s.url,
+    type: "LECTURE",
+    estimatedMinutes: 50,
+    completed: false,
+  }));
 
   // ── Priority 2: path skills (existing behavior) ────────────────────────────
   const progress = await getPathProgress(user.id, activeGoal.path.slug);
@@ -113,6 +75,7 @@ export const GET = handle(async () => {
       }
 
       missions.push({
+        kind: "skill",
         skillSlug: status.slug,
         skillName: status.name,
         resourceTitle: primaryResource?.title ?? null,

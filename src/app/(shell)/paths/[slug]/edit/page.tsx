@@ -19,7 +19,7 @@ export default async function PathEditPage({
       domain: { select: { name: true, slug: true } },
       steps: {
         include: {
-          skill: { select: { slug: true, name: true } },
+          skill: { select: { id: true, slug: true, name: true } },
           course: { select: { slug: true, code: true, title: true } },
         },
         orderBy: { order: "asc" },
@@ -42,10 +42,33 @@ export default async function PathEditPage({
     );
   }
 
-  const skills = await db.skill.findMany({
-    orderBy: { name: "asc" },
-    select: { id: true, name: true },
-  });
+  const [skills, courses] = await Promise.all([
+    db.skill.findMany({
+      orderBy: { name: "asc" },
+      select: { id: true, name: true },
+    }),
+    db.course.findMany({
+      where: { universityId: { not: null } },
+      orderBy: { code: "asc" },
+      select: { id: true, code: true, title: true },
+    }),
+  ]);
+
+  // Suggestions: skills unlocked by the last skill step, not already in the path
+  const lastSkillStep = [...path.steps].reverse().find((s) => s.skill);
+  const inPathSkillIds = new Set(
+    path.steps.map((s) => s.skill?.id).filter((id): id is string => Boolean(id)),
+  );
+  const suggestions = lastSkillStep?.skill
+    ? await db.skill.findMany({
+        where: {
+          id: { notIn: [...inPathSkillIds] },
+          prerequisites: { some: { prerequisiteId: lastSkillStep.skill.id } },
+        },
+        select: { id: true, name: true },
+        take: 5,
+      })
+    : [];
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-12">
@@ -59,7 +82,20 @@ export default async function PathEditPage({
       </p>
 
       <div className="mt-6">
-        <BuilderTools pathSlug={slug} steps={path.steps} skills={skills} />
+        <BuilderTools
+          pathSlug={slug}
+          steps={path.steps}
+          skills={skills.map((s) => ({ id: s.id, label: s.name }))}
+          courses={courses.map((c) => ({
+            id: c.id,
+            label: `${c.code ?? "?"} — ${c.title}`,
+          }))}
+          suggestions={suggestions.map((s) => ({
+            id: s.id,
+            name: s.name,
+            reason: `Débloqué par ${lastSkillStep?.skill?.name ?? "ta dernière étape"}`,
+          }))}
+        />
       </div>
     </div>
   );

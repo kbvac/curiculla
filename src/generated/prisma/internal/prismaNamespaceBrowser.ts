@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  StudyProfile: 'StudyProfile',
   ScheduleEnrollment: 'ScheduleEnrollment',
   Session: 'Session',
   University: 'University',
@@ -101,11 +102,26 @@ export const UserScalarFieldEnum = {
   passwordHash: 'passwordHash',
   googleId: 'googleId',
   universityId: 'universityId',
+  role: 'role',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const StudyProfileScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  days: 'days',
+  minutesPerDay: 'minutesPerDay',
+  startTime: 'startTime',
+  sessionMinutes: 'sessionMinutes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StudyProfileScalarFieldEnum = (typeof StudyProfileScalarFieldEnum)[keyof typeof StudyProfileScalarFieldEnum]
 
 
 export const ScheduleEnrollmentScalarFieldEnum = {
@@ -331,6 +347,7 @@ export const LearningPathStepScalarFieldEnum = {
   courseId: 'courseId',
   customTitle: 'customTitle',
   customUrl: 'customUrl',
+  origin: 'origin',
   phase: 'phase',
   order: 'order',
   isRequired: 'isRequired'

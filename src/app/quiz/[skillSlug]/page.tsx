@@ -119,7 +119,7 @@ export default function QuizPage() {
   if (submitted && result) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-12">
-        <div className={`rounded-lg border p-6 ${result.passed ? "border-success/30 bg-success-light/30" : "border-red-300 bg-red-50"}`}>
+        <div className={`rounded-lg border p-6 ${result.passed ? "border-success/30 bg-success-light/30" : "border-danger/30 bg-danger-light/40"}`}>
           <h1 className="font-display text-2xl font-bold text-fg">
             {result.passed ? "Quiz Passed!" : "Not quite there yet"}
           </h1>
@@ -156,7 +156,7 @@ export default function QuizPage() {
                           ci === r.correct
                             ? "bg-success-light font-medium text-success"
                             : ci === r.selected && !r.isCorrect
-                            ? "bg-red-50 text-red-600"
+                            ? "bg-danger-light text-danger"
                             : "text-fg-muted"
                         }`}
                       >

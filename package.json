@@ -1,5 +1,5 @@
 {
-  "name": "learnhighthings",
+  "name": "curricula",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -13,7 +13,8 @@
     "seed:assessments": "tsx prisma/seed/assessments.ts",
     "catalog:build": "tsx prisma/seed/catalog.ts",
     "import:ucsd:lectures": "tsx prisma/seed/import-ucsd-lectures.ts",
-    "setup": "npm run seed && npm run catalog:build && npm run seed:assessments && npm run import:ucsd:lectures"
+    "setup": "npm run seed && npm run catalog:build && npm run seed:assessments && npm run import:ucsd:lectures",
+    "promote": "tsx prisma/seed/promote.ts"
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.10.0",

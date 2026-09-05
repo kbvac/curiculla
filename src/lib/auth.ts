@@ -55,6 +55,7 @@ type SessionUser = {
   id: string;
   email: string;
   name: string | null;
+  role: string;
 };
 
 export async function getCurrentUser(): Promise<SessionUser | null> {
@@ -64,7 +65,7 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
 
   const session = await db.session.findUnique({
     where: { id: token },
-    select: { expiresAt: true, user: { select: { id: true, email: true, name: true } } },
+    select: { expiresAt: true, user: { select: { id: true, email: true, name: true, role: true } } },
   });
 
   if (!session || session.expiresAt < new Date()) {

@@ -445,14 +445,6 @@ export type CurriculumCourseUncheckedUpdateManyWithoutCurriculumNestedInput = {
   deleteMany?: Prisma.CurriculumCourseScalarWhereInput | Prisma.CurriculumCourseScalarWhereInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type CurriculumCourseCreateNestedManyWithoutCourseInput = {
   create?: Prisma.XOR<Prisma.CurriculumCourseCreateWithoutCourseInput, Prisma.CurriculumCourseUncheckedCreateWithoutCourseInput> | Prisma.CurriculumCourseCreateWithoutCourseInput[] | Prisma.CurriculumCourseUncheckedCreateWithoutCourseInput[]
   connectOrCreate?: Prisma.CurriculumCourseCreateOrConnectWithoutCourseInput | Prisma.CurriculumCourseCreateOrConnectWithoutCourseInput[]

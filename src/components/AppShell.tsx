@@ -26,6 +26,7 @@ const NAV_SECTIONS: Array<{ title: string; items: NavItem[] }> = [
     items: [
       { href: "/skill-gap", label: "Mes lacunes", icon: "M12 8v4m0 4h.01M12 3a9 9 0 100 18 9 9 0 000-18z" },
       { href: "/bookmarks", label: "Favoris", icon: "M6 4h12v16l-6-4-6 4V4z" },
+      { href: "/transcript", label: "Relevé", icon: "M6 3h9l5 5v13a1 1 0 01-1 1H6a1 1 0 01-1-1V4a1 1 0 011-1zm9 0v5h5M9 13h6M9 17h6" },
       { href: "/search", label: "Recherche", icon: "M10 4a6 6 0 104.47 10.03L20 19.5 21.5 18l-5.47-5.53A6 6 0 0010 4z" },
     ],
   },

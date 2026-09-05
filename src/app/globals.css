@@ -1,35 +1,57 @@
 @import "tailwindcss";
 
-/* ─── LearnHigh — « Le Registraire » ─────────────────────────────────────────
-   paper (froid, pas crème) · ink · rule (filets) · crimson (le tampon officiel)
-   viridian (validé). Trois faces: Bricolage Grotesque (titres),
-   IBM Plex Sans (humain), IBM Plex Mono (données de catalogue).
-   Disciplines: mono = uniquement des données (codes, unités, termes).
-   Une seule couleur d'autorité: crimson. */
+/* ─── Curricula — Design System « Light Premium » ────────────────────────────
+   Aligné sur l'identité auth validée : papier #F8F8F6, encre #111111,
+   vert d'action #12B76A, surfaces douces, ombres discrètes.
+   Rôles: le vert = action/progression/validation (L'ÉNERGIE),
+   l'encre = structure et données. Mono = codes de catalogue uniquement.
+   Danger (crimson #A4243B) réservé aux erreurs et exclusions. */
 
 :root {
-  --bg: #F4F5F7;
+  /* Surfaces */
+  --bg: #F8F8F6;
   --bg-card: #FFFFFF;
-  --bg-muted: #EDEEF2;
-  --fg: #16181D;
-  --fg-muted: #5C6068;
-  --fg-faint: #9DA1AA;
-  --border: #D8DBE2;
-  --border-strong: #B9BEC9;
-  --accent: #A4243B;       /* crimson — requis / officiel / marque */
-  --accent-light: #F7E3E7;
-  --accent-dark: #7E1C2F;
-  --success: #2E5E4E;      /* viridian — validé */
-  --success-light: #E3EEEA;
+  --bg-muted: #F0F0EE;
+  --bg-raised: #FAFAF8;
 
-  /* Statuts réduits à 3 états lisibles */
-  --locked: #C6CAD2;       /* verrouillé — gris pâle */
-  --available: #9DA1AA;    /* à faire — encre grise */
-  --in-progress: #A4243B;  /* en cours — crimson */
-  --completed: #2E5E4E;    /* validé — viridian */
-  --mastered: #2E5E4E;
+  /* Encre */
+  --fg: #111111;
+  --fg-muted: #707070;
+  --fg-faint: #A0A09A;
+
+  /* Filets */
+  --border: #E1E1DD;
+  --border-strong: #D4D4CF;
+
+  /* Action — le vert du produit */
+  --accent: #12B76A;
+  --accent-light: #E7F7EF;
+  --accent-dark: #0E9155;
+
+  /* Danger — erreurs uniquement */
+  --danger: #A4243B;
+  --danger-light: #F7E3E7;
+
+  /* Statuts: disponible = encre, en cours = vert, validé = vert plein */
+  --locked: #C9C9C4;
+  --available: #A0A09A;
+  --in-progress: #12B76A;
+  --completed: #12B76A;
+  --mastered: #0E9155;
+  --success: #12B76A;
+  --success-light: #E7F7EF;
 
   --nav-height: 3.5rem;
+
+  /* Radii système */
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+
+  /* Ombres système — discrètes */
+  --shadow-sm: 0 1px 2px rgba(17, 17, 17, 0.05);
+  --shadow-md: 0 4px 12px -2px rgba(17, 17, 17, 0.08);
+  --shadow-lg: 0 24px 60px -24px rgba(17, 17, 17, 0.18), 0 2px 6px rgba(17, 17, 17, 0.05);
 }
 
 @theme inline {
@@ -44,6 +66,8 @@
   --color-accent: var(--accent);
   --color-accent-light: var(--accent-light);
   --color-accent-dark: var(--accent-dark);
+  --color-danger: var(--danger);
+  --color-danger-light: var(--danger-light);
   --color-success: var(--success);
   --color-success-light: var(--success-light);
   --color-locked: var(--locked);
@@ -51,10 +75,58 @@
   --color-in-progress: var(--in-progress);
   --color-completed: var(--completed);
   --color-mastered: var(--mastered);
-  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", monospace;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
 }
+
+/* ─── Système boutons & champs ────────────────────────────────────────────── */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.625rem 1.25rem;
+  transition: background 0.15s ease, opacity 0.15s ease;
+}
+.btn-primary:hover { background: var(--accent-dark); }
+.btn-primary:disabled { opacity: 0.5; }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  color: var(--fg-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.625rem 1.25rem;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+.field {
+  display: block;
+  width: 100%;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--fg);
+  outline: none;
+}
+.field:focus { border-color: var(--accent); }
+.field::placeholder { color: var(--fg-faint); }
 
 body {
   background: var(--bg);
@@ -66,7 +138,7 @@ body {
 
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  letter-spacing: -0.015em;
+  letter-spacing: -0.02em;
 }
 
 /* ─── Statuts ─────────────────────────────────────────────────────────────── */
@@ -74,14 +146,14 @@ h1, h2, h3, h4 {
 .status-locked { color: var(--locked); }
 .status-available { color: var(--fg-muted); }
 .status-in-progress { color: var(--accent); }
-.status-completed { color: var(--completed); }
-.status-mastered { color: var(--completed); }
+.status-completed { color: var(--accent); }
+.status-mastered { color: var(--accent-dark); }
 
 .bg-status-locked { background-color: var(--bg-muted); }
 .bg-status-available { background-color: var(--bg-muted); }
 .bg-status-in-progress { background-color: var(--accent-light); }
-.bg-status-completed { background-color: var(--success-light); }
-.bg-status-mastered { background-color: var(--success-light); }
+.bg-status-completed { background-color: var(--accent-light); }
+.bg-status-mastered { background-color: var(--accent-light); }
 
 /* ─── Données de catalogue: la voix mono ──────────────────────────────────── */
 
@@ -100,27 +172,28 @@ h1, h2, h3, h4 {
   color: var(--fg-faint);
 }
 
-/* ─── Progress bar ─────────────────────────────────────────────────────────── */
+/* ─── Progression ─────────────────────────────────────────────────────────── */
 
 .progress-bar {
   height: 6px;
   border-radius: 3px;
-  background: var(--border);
+  background: var(--bg-muted);
   overflow: hidden;
 }
 .progress-bar-fill {
   height: 100%;
   border-radius: 3px;
+  background: var(--accent);
   transition: width 0.5s ease;
 }
 
-/* ─── Cartes: discret par défaut ──────────────────────────────────────────── */
+/* ─── Cartes ──────────────────────────────────────────────────────────────── */
 
 .card-hover {
   transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
 .card-hover:hover {
-  box-shadow: 0 4px 12px rgba(22, 24, 29, 0.06);
+  box-shadow: var(--shadow-md);
   transform: translateY(-1px);
 }
 
@@ -152,9 +225,10 @@ h1, h2, h3, h4 {
   border: 2px solid var(--border-strong);
   background: var(--bg-card);
   transform: translateX(-7px);
+  border-radius: 4px;
 }
 .rail-node[data-state="in-progress"] { border-color: var(--accent); background: var(--accent-light); }
-.rail-node[data-state="completed"] { border-color: var(--completed); background: var(--completed); }
+.rail-node[data-state="completed"] { border-color: var(--accent); background: var(--accent); }
 .rail-node[data-state="locked"] { border-color: var(--locked); background: var(--bg-muted); }
 
 /* ─── Transcript bar ──────────────────────────────────────────────────────── */
@@ -171,18 +245,16 @@ h1, h2, h3, h4 {
 }
 .transcript-fill {
   height: 100%;
-  background: var(--completed);
+  background: var(--accent);
   transition: width 0.5s ease;
 }
 
-/* ─── Focus visible ───────────────────────────────────────────────────────── */
+/* ─── Focus & motion ──────────────────────────────────────────────────────── */
 
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
-
-/* ─── Motion réduite ──────────────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
   * {

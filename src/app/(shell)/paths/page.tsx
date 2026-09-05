@@ -1,8 +1,22 @@
 import Link from "next/link";
 import { db } from "@/lib/db";
+import { getCurrentUser } from "@/lib/auth";
 
 export default async function PathsPage() {
+  const user = await getCurrentUser();
+
+  const myPaths = user
+    ? await db.learningPath.findMany({
+        where: { ownerId: user.id },
+        include: { domain: { select: { name: true, slug: true } }, _count: { select: { steps: true } } },
+        orderBy: { name: "asc" },
+      })
+    : [];
+
+  // Global catalogue only: personal paths (ownerId set) are private
+  // and surface exclusively in the "Mes parcours" section above.
   const paths = await db.learningPath.findMany({
+    where: { ownerId: null },
     orderBy: { order: "asc" },
     include: {
       domain: { select: { name: true, slug: true } },
@@ -32,13 +46,61 @@ export default async function PathsPage() {
           meilleures ressources trouvées.
         </p>
         </div>
-        <a
+        <Link
           href="/paths/new"
-          className="rounded-sm bg-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-dark"
+          className="btn-primary"
         >
           + Créer mon parcours
-        </a>
+        </Link>
       </header>
+
+      {/* ── Mes parcours (builder personnel) ──────────────────────────────── */}
+      {user && (
+        <section className="mb-12">
+          <p className="data-label mb-3">Mes parcours</p>
+          {myPaths.length === 0 ? (
+            <div className="border border-dashed border-border bg-card p-5">
+              <p className="text-sm text-fg-muted">
+                Aucun parcours personnel — assemble le tien : skills de la
+                bibliothèque, cours, liens libres.
+              </p>
+              <Link
+                href="/paths/new"
+                className="mt-3 inline-block rounded-sm border border-border px-3 py-1.5 text-sm text-fg-muted transition-colors hover:border-accent hover:text-accent"
+              >
+                Créer mon premier parcours →
+              </Link>
+            </div>
+          ) : (
+            <div className="grid gap-3 sm:grid-cols-2">
+              {myPaths.map((path) => (
+                <div
+                  key={path.id}
+                  className="flex items-start justify-between gap-3 border border-border bg-card p-4"
+                >
+                  <Link href={`/paths/${path.slug}`} className="min-w-0 flex-1">
+                    <span className="font-mono text-xs text-fg-faint">
+                      {path.domain.name} · {path._count.steps} étapes
+                    </span>
+                    <h2 className="mt-0.5 font-display font-semibold text-fg">
+                      {path.name}
+                    </h2>
+                    <p className="mt-1 line-clamp-1 text-sm text-fg-muted">
+                      {path.tagline}
+                    </p>
+                  </Link>
+                  <Link
+                    href={`/paths/${path.slug}/edit`}
+                    className="shrink-0 rounded-sm border border-border px-2.5 py-1.5 font-mono text-xs text-fg-muted transition-colors hover:border-accent hover:text-accent"
+                  >
+                    éditer
+                  </Link>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
 
       {/* ── Parcours officiels ─────────────────────────────────────────────── */}
       <section className="mb-12">

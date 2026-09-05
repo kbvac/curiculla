@@ -127,40 +127,52 @@ export default function SkillGapPage() {
             </div>
           ) : (
             <div className="mt-4 space-y-2">
-              {gaps.missingSkills.map((skill) => (
+              {gaps.missingSkills.map((skill) => {
+                const href =
+                  (skill as { kind?: string }).kind === "course"
+                    ? `/courses/${skill.slug}`
+                    : `/skills/${skill.slug}`;
+                const isCourse = href.startsWith("/courses/");
+                return (
                 <div
                   key={skill.slug}
                   className="flex items-center gap-4 rounded-lg border border-border bg-card p-4"
                 >
                   <div className="flex-1">
                     <Link
-                      href={`/skills/${skill.slug}`}
+                      href={href}
                       className="font-medium text-fg hover:text-accent"
                     >
+                      {isCourse && (
+                        <span className="course-code mr-2 text-accent">cours</span>
+                      )}
                       {skill.name}
                     </Link>
                     <p className="mt-0.5 text-xs text-fg-faint">
-                      {skill.status === "LOCKED" ? "Prerequisites needed" : "Ready to start"}
+                      {skill.status === "LOCKED" ? "Prérequis manquants" : "Prêt à commencer"}
                     </p>
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => declareSkill(skill.slug, true)}
-                      disabled={declaring === skill.slug}
-                      className="rounded-md border border-success/30 bg-success-light/50 px-3 py-1.5 text-xs font-medium text-success transition-colors hover:bg-success-light disabled:opacity-50"
-                    >
-                      {declaring === skill.slug ? "..." : "I know this"}
-                    </button>
+                    {!isCourse && (
+                      <button
+                        onClick={() => declareSkill(skill.slug, true)}
+                        disabled={declaring === skill.slug}
+                        className="rounded-md border border-success/30 bg-success-light/50 px-3 py-1.5 text-xs font-medium text-success transition-colors hover:bg-success-light disabled:opacity-50"
+                      >
+                        {declaring === skill.slug ? "..." : "Je connais"}
+                      </button>
+                    )}
                     <Link
-                      href={`/skills/${skill.slug}`}
+                      href={href}
                       className="rounded-md border border-border px-3 py-1.5 text-xs font-medium text-fg-muted transition-colors hover:border-accent/40 hover:text-fg"
                     >
-                      Learn
+                      Ouvrir
                     </Link>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

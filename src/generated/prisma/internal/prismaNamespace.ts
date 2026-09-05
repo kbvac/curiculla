@@ -398,6 +398,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
+  StudyProfile: 'StudyProfile',
   ScheduleEnrollment: 'ScheduleEnrollment',
   Session: 'Session',
   University: 'University',
@@ -440,7 +441,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "scheduleEnrollment" | "session" | "university" | "faculty" | "degree" | "curriculum" | "curriculumCourse" | "domain" | "subject" | "topic" | "skill" | "skillPrerequisite" | "course" | "coursePrerequisite" | "resource" | "resourceSkill" | "learningPath" | "learningPathStep" | "userGoal" | "userSkill" | "userProgress" | "assessment" | "question" | "assessmentAttempt" | "exercise" | "bookmark" | "dailyActivity"
+    modelProps: "user" | "studyProfile" | "scheduleEnrollment" | "session" | "university" | "faculty" | "degree" | "curriculum" | "curriculumCourse" | "domain" | "subject" | "topic" | "skill" | "skillPrerequisite" | "course" | "coursePrerequisite" | "resource" | "resourceSkill" | "learningPath" | "learningPathStep" | "userGoal" | "userSkill" | "userProgress" | "assessment" | "question" | "assessmentAttempt" | "exercise" | "bookmark" | "dailyActivity"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -515,6 +516,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
+        }
+      }
+    }
+    StudyProfile: {
+      payload: Prisma.$StudyProfilePayload<ExtArgs>
+      fields: Prisma.StudyProfileFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.StudyProfileFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudyProfilePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.StudyProfileFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudyProfilePayload>
+        }
+        findFirst: {
+          args: Prisma.StudyProfileFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudyProfilePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.StudyProfileFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudyProfilePayload>
+        }
+        findMany: {
+          args: Prisma.StudyProfileFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudyProfilePayload>[]
+        }
+        create: {
+          args: Prisma.StudyProfileCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudyProfilePayload>
+        }
+        createMany: {
+          args: Prisma.StudyProfileCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.StudyProfileCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudyProfilePayload>[]
+        }
+        delete: {
+          args: Prisma.StudyProfileDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudyProfilePayload>
+        }
+        update: {
+          args: Prisma.StudyProfileUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudyProfilePayload>
+        }
+        deleteMany: {
+          args: Prisma.StudyProfileDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.StudyProfileUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.StudyProfileUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudyProfilePayload>[]
+        }
+        upsert: {
+          args: Prisma.StudyProfileUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudyProfilePayload>
+        }
+        aggregate: {
+          args: Prisma.StudyProfileAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateStudyProfile>
+        }
+        groupBy: {
+          args: Prisma.StudyProfileGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudyProfileGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.StudyProfileCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudyProfileCountAggregateOutputType> | number
         }
       }
     }
@@ -2559,11 +2634,26 @@ export const UserScalarFieldEnum = {
   passwordHash: 'passwordHash',
   googleId: 'googleId',
   universityId: 'universityId',
+  role: 'role',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const StudyProfileScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  days: 'days',
+  minutesPerDay: 'minutesPerDay',
+  startTime: 'startTime',
+  sessionMinutes: 'sessionMinutes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StudyProfileScalarFieldEnum = (typeof StudyProfileScalarFieldEnum)[keyof typeof StudyProfileScalarFieldEnum]
 
 
 export const ScheduleEnrollmentScalarFieldEnum = {
@@ -2789,6 +2879,7 @@ export const LearningPathStepScalarFieldEnum = {
   courseId: 'courseId',
   customTitle: 'customTitle',
   customUrl: 'customUrl',
+  origin: 'origin',
   phase: 'phase',
   order: 'order',
   isRequired: 'isRequired'
@@ -3113,6 +3204,7 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
+  studyProfile?: Prisma.StudyProfileOmit
   scheduleEnrollment?: Prisma.ScheduleEnrollmentOmit
   session?: Prisma.SessionOmit
   university?: Prisma.UniversityOmit

@@ -83,52 +83,54 @@ export default async function CoursesPage({
         ))}
       </div>
 
-      {/* Courses grouped by university */}
+      {/* Courses grouped by university — registrar table */}
       {courses.length === 0 ? (
         <p className="py-12 text-center text-fg-muted">Aucun cours.</p>
       ) : (
         [...grouped.entries()].map(([uniName, uniCourses]) => (
           <section key={uniName} className="mb-10">
-            <h2 className="mb-4 font-display text-xl font-semibold text-fg">
-              {uniName}
-              <span className="ml-2 text-sm font-normal text-fg-faint">
+            <div className="mb-3 flex items-baseline justify-between border-b border-border pb-2">
+              <h2 className="font-display text-lg font-semibold text-fg">{uniName}</h2>
+              <span className="font-mono text-xs text-fg-faint">
                 {uniCourses.length} cours
               </span>
-            </h2>
-            <div className="grid gap-3 md:grid-cols-2">
-              {uniCourses.map((c) => (
-                <Link
-                  key={c.slug}
-                  href={`/courses/${c.slug}`}
-                  className="card-hover block rounded-lg border border-border bg-card p-4"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="rounded bg-accent/10 px-2 py-0.5 font-mono text-xs font-semibold text-accent">
-                          {c.code}
+            </div>
+            <div className="overflow-hidden rounded-xl border border-border bg-card">
+              <div className="hidden grid-cols-[110px_1fr_90px_90px_90px] gap-3 border-b border-border bg-muted px-4 py-2 sm:grid">
+                <span className="data-label">Code</span>
+                <span className="data-label">Intitulé</span>
+                <span className="data-label text-right">Unités</span>
+                <span className="data-label text-right">Prérequis</span>
+                <span className="data-label text-right">Ressources</span>
+              </div>
+              <div className="divide-y divide-border">
+                {uniCourses.map((c) => (
+                  <Link
+                    key={c.slug}
+                    href={`/courses/${c.slug}`}
+                    className="grid grid-cols-1 gap-1 px-4 py-3 transition-colors hover:bg-muted/60 sm:grid-cols-[110px_1fr_90px_90px_90px] sm:items-baseline sm:gap-3"
+                  >
+                    <span className="course-code text-accent">{c.code}</span>
+                    <span className="min-w-0">
+                      <span className="block truncate font-medium text-fg">{c.title}</span>
+                      {c.catalogLevel && (
+                        <span className="font-mono text-[11px] text-fg-faint">
+                          {c.catalogLevel === "LOWER_DIVISION" ? "lower div." : "upper div."}
                         </span>
-                        {c.catalogLevel && (
-                          <span className="text-xs text-fg-faint">
-                            {c.catalogLevel === "LOWER_DIVISION" ? "Lower div" : "Upper div"}
-                          </span>
-                        )}
-                      </div>
-                      <h3 className="mt-1.5 font-medium text-fg">{c.title}</h3>
-                      {c.description && (
-                        <p className="mt-1 line-clamp-2 text-sm text-fg-faint">
-                          {c.description}
-                        </p>
                       )}
-                    </div>
-                    <div className="shrink-0 text-right text-xs text-fg-faint">
-                      {c.units && <div>{c.units} units</div>}
-                      <div className="mt-1">{c._count.prerequisites} prereqs</div>
-                      <div className="mt-1">{c._count.resources} resources</div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
+                    </span>
+                    <span className="font-mono text-xs text-fg-muted sm:text-right">
+                      {c.units ? `${c.units}u` : "—"}
+                    </span>
+                    <span className="font-mono text-xs text-fg-muted sm:text-right">
+                      {c._count.prerequisites || "—"}
+                    </span>
+                    <span className="font-mono text-xs text-fg-muted sm:text-right">
+                      {c._count.resources || "—"}
+                    </span>
+                  </Link>
+                ))}
+              </div>
             </div>
           </section>
         ))

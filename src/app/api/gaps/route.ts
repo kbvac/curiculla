@@ -4,6 +4,7 @@ import { computeSkillStatus } from "@/lib/skills";
 import { handle, json, badRequest } from "@/lib/http";
 
 type MissingEntry = {
+  kind: "skill" | "course";
   slug: string;
   name: string;
   status: string;
@@ -72,6 +73,7 @@ export const GET = handle(async (request: Request) => {
       const started = progresses.some((p) => p.status === "IN_PROGRESS");
       if (!done) {
         missingSkills.push({
+          kind: "course",
           slug: course.slug,
           name: `${course.code ?? ""} — ${course.title}`.trim(),
           status: started ? "IN_PROGRESS" : "AVAILABLE",
@@ -87,6 +89,7 @@ export const GET = handle(async (request: Request) => {
     );
     if (result.status === "LOCKED" || result.status === "AVAILABLE") {
       missingSkills.push({
+        kind: "skill",
         slug: result.slug,
         name: result.name,
         status: result.status,

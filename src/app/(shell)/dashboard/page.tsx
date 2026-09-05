@@ -225,7 +225,7 @@ export default async function DashboardPage() {
           </p>
           <Link
             href="/paths"
-            className="mt-4 inline-block rounded-sm bg-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-dark"
+            className="btn-primary mt-4 inline-block"
           >
             Explorer les parcours
           </Link>
@@ -241,7 +241,7 @@ export default async function DashboardPage() {
           </p>
           <Link
             href="/paths"
-            className="mt-4 inline-block rounded-sm bg-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-dark"
+            className="btn-primary mt-4 inline-block"
           >
             Voir les parcours
           </Link>

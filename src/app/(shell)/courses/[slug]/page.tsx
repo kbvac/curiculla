@@ -3,6 +3,8 @@ import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { EnrollButton } from "@/components/ScheduleControls";
+import { ContributeResourceForm } from "@/components/ContributeResourceForm";
+import { ResourceActions } from "@/components/ResourceActions";
 
 export default async function CourseDetailPage({
   params,
@@ -31,6 +33,7 @@ export default async function CourseDetailPage({
       },
       resources: {
         select: {
+          id: true,
           slug: true,
           title: true,
           type: true,
@@ -190,9 +193,14 @@ export default async function CourseDetailPage({
 
           {/* Resources */}
           <section>
-            <h2 className="font-display text-xl font-semibold text-fg">
-              Ressources
-            </h2>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <h2 className="font-display text-xl font-semibold text-fg">
+                Ressources
+              </h2>
+              {user && (user.role === "ADMIN" || user.role === "CONTRIBUTOR") && (
+                <ContributeResourceForm courseSlug={course.slug} />
+              )}
+            </div>
             <p className="mt-1 text-sm text-fg-muted">
               Official material from {course.university?.name ?? "l'université"}.
             </p>
@@ -202,45 +210,73 @@ export default async function CourseDetailPage({
                   Aucune ressource liée.
                 </p>
               ) : (
-                course.resources.map((r) => (
-                  <a
-                    key={r.slug}
-                    href={r.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="card-hover block rounded-lg border border-border bg-card p-4"
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-medium text-accent">{r.type}</span>
-                          {r.verified && (
-                            <span className="rounded bg-success-light px-1.5 py-0.5 text-xs font-medium text-success">
-                              Verified
-                            </span>
-                          )}
-                          {r.year && (
-                            <span className="rounded bg-muted px-1.5 py-0.5 text-xs text-fg-faint">
-                              {r.year}
-                            </span>
+                course.resources.map((r) => {
+                  const manageable =
+                    user != null &&
+                    (user.role === "ADMIN" || user.role === "CONTRIBUTOR") &&
+                    r.slug.startsWith("team-");
+                  const inner = (
+                    <>
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-medium text-accent">{r.type}</span>
+                            {r.verified && (
+                              <span className="rounded bg-success-light px-1.5 py-0.5 text-xs font-medium text-success">
+                                Verified
+                              </span>
+                            )}
+                            {r.year && (
+                              <span className="rounded bg-muted px-1.5 py-0.5 text-xs text-fg-faint">
+                                {r.year}
+                              </span>
+                            )}
+                          </div>
+                          <h3 className="mt-1 font-medium text-fg">{r.title}</h3>
+                          {r.instructor && (
+                            <p className="mt-1 text-sm text-fg-muted">{r.instructor}</p>
                           )}
                         </div>
-                        <h3 className="mt-1 font-medium text-fg">{r.title}</h3>
-                        {r.instructor && (
-                          <p className="mt-1 text-sm text-fg-muted">{r.instructor}</p>
+                        {r.qualityScore && (
+                          <div className="shrink-0 text-right">
+                            <div className="text-lg font-bold text-success">
+                              {Math.round(r.qualityScore)}
+                            </div>
+                            <div className="text-xs text-fg-faint">quality</div>
+                          </div>
                         )}
                       </div>
-                      {r.qualityScore && (
-                        <div className="shrink-0 text-right">
-                          <div className="text-lg font-bold text-success">
-                            {Math.round(r.qualityScore)}
-                          </div>
-                          <div className="text-xs text-fg-faint">quality</div>
-                        </div>
+                      {manageable && (
+                        <ResourceActions courseSlug={course.slug} resource={r} />
                       )}
+                    </>
+                  );
+                  return manageable ? (
+                    <div
+                      key={r.slug}
+                      className="block rounded-lg border border-dashed border-accent/40 bg-card p-4"
+                    >
+                      <a
+                        href={r.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block hover:opacity-90"
+                      >
+                        {inner}
+                      </a>
                     </div>
-                  </a>
-                ))
+                  ) : (
+                    <a
+                      key={r.slug}
+                      href={r.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="card-hover block rounded-lg border border-border bg-card p-4"
+                    >
+                      {inner}
+                    </a>
+                  );
+                })
               )}
             </div>
           </section>

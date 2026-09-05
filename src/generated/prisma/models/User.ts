@@ -31,6 +31,7 @@ export type UserMinAggregateOutputType = {
   passwordHash: string | null
   googleId: string | null
   universityId: string | null
+  role: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -42,6 +43,7 @@ export type UserMaxAggregateOutputType = {
   passwordHash: string | null
   googleId: string | null
   universityId: string | null
+  role: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -53,6 +55,7 @@ export type UserCountAggregateOutputType = {
   passwordHash: number
   googleId: number
   universityId: number
+  role: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -66,6 +69,7 @@ export type UserMinAggregateInputType = {
   passwordHash?: true
   googleId?: true
   universityId?: true
+  role?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -77,6 +81,7 @@ export type UserMaxAggregateInputType = {
   passwordHash?: true
   googleId?: true
   universityId?: true
+  role?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -88,6 +93,7 @@ export type UserCountAggregateInputType = {
   passwordHash?: true
   googleId?: true
   universityId?: true
+  role?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -172,6 +178,7 @@ export type UserGroupByOutputType = {
   passwordHash: string | null
   googleId: string | null
   universityId: string | null
+  role: string
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -204,6 +211,7 @@ export type UserWhereInput = {
   passwordHash?: Prisma.StringNullableFilter<"User"> | string | null
   googleId?: Prisma.StringNullableFilter<"User"> | string | null
   universityId?: Prisma.StringNullableFilter<"User"> | string | null
+  role?: Prisma.StringFilter<"User"> | string
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   university?: Prisma.XOR<Prisma.UniversityNullableScalarRelationFilter, Prisma.UniversityWhereInput> | null
@@ -216,6 +224,7 @@ export type UserWhereInput = {
   activities?: Prisma.DailyActivityListRelationFilter
   enrollments?: Prisma.ScheduleEnrollmentListRelationFilter
   paths?: Prisma.LearningPathListRelationFilter
+  studyProfile?: Prisma.XOR<Prisma.StudyProfileNullableScalarRelationFilter, Prisma.StudyProfileWhereInput> | null
 }
 
 export type UserOrderByWithRelationInput = {
@@ -225,6 +234,7 @@ export type UserOrderByWithRelationInput = {
   passwordHash?: Prisma.SortOrderInput | Prisma.SortOrder
   googleId?: Prisma.SortOrderInput | Prisma.SortOrder
   universityId?: Prisma.SortOrderInput | Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   university?: Prisma.UniversityOrderByWithRelationInput
@@ -237,6 +247,7 @@ export type UserOrderByWithRelationInput = {
   activities?: Prisma.DailyActivityOrderByRelationAggregateInput
   enrollments?: Prisma.ScheduleEnrollmentOrderByRelationAggregateInput
   paths?: Prisma.LearningPathOrderByRelationAggregateInput
+  studyProfile?: Prisma.StudyProfileOrderByWithRelationInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -249,6 +260,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringNullableFilter<"User"> | string | null
   passwordHash?: Prisma.StringNullableFilter<"User"> | string | null
   universityId?: Prisma.StringNullableFilter<"User"> | string | null
+  role?: Prisma.StringFilter<"User"> | string
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   university?: Prisma.XOR<Prisma.UniversityNullableScalarRelationFilter, Prisma.UniversityWhereInput> | null
@@ -261,6 +273,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   activities?: Prisma.DailyActivityListRelationFilter
   enrollments?: Prisma.ScheduleEnrollmentListRelationFilter
   paths?: Prisma.LearningPathListRelationFilter
+  studyProfile?: Prisma.XOR<Prisma.StudyProfileNullableScalarRelationFilter, Prisma.StudyProfileWhereInput> | null
 }, "id" | "email" | "googleId">
 
 export type UserOrderByWithAggregationInput = {
@@ -270,6 +283,7 @@ export type UserOrderByWithAggregationInput = {
   passwordHash?: Prisma.SortOrderInput | Prisma.SortOrder
   googleId?: Prisma.SortOrderInput | Prisma.SortOrder
   universityId?: Prisma.SortOrderInput | Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -287,6 +301,7 @@ export type UserScalarWhereWithAggregatesInput = {
   passwordHash?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   googleId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   universityId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  role?: Prisma.StringWithAggregatesFilter<"User"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -297,6 +312,7 @@ export type UserCreateInput = {
   name?: string | null
   passwordHash?: string | null
   googleId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   university?: Prisma.UniversityCreateNestedOneWithoutUsersInput
@@ -309,6 +325,7 @@ export type UserCreateInput = {
   activities?: Prisma.DailyActivityCreateNestedManyWithoutUserInput
   enrollments?: Prisma.ScheduleEnrollmentCreateNestedManyWithoutUserInput
   paths?: Prisma.LearningPathCreateNestedManyWithoutOwnerInput
+  studyProfile?: Prisma.StudyProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -318,6 +335,7 @@ export type UserUncheckedCreateInput = {
   passwordHash?: string | null
   googleId?: string | null
   universityId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -329,6 +347,7 @@ export type UserUncheckedCreateInput = {
   activities?: Prisma.DailyActivityUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.ScheduleEnrollmentUncheckedCreateNestedManyWithoutUserInput
   paths?: Prisma.LearningPathUncheckedCreateNestedManyWithoutOwnerInput
+  studyProfile?: Prisma.StudyProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -337,6 +356,7 @@ export type UserUpdateInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   university?: Prisma.UniversityUpdateOneWithoutUsersNestedInput
@@ -349,6 +369,7 @@ export type UserUpdateInput = {
   activities?: Prisma.DailyActivityUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.ScheduleEnrollmentUpdateManyWithoutUserNestedInput
   paths?: Prisma.LearningPathUpdateManyWithoutOwnerNestedInput
+  studyProfile?: Prisma.StudyProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -358,6 +379,7 @@ export type UserUncheckedUpdateInput = {
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   universityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -369,6 +391,7 @@ export type UserUncheckedUpdateInput = {
   activities?: Prisma.DailyActivityUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.ScheduleEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   paths?: Prisma.LearningPathUncheckedUpdateManyWithoutOwnerNestedInput
+  studyProfile?: Prisma.StudyProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -378,6 +401,7 @@ export type UserCreateManyInput = {
   passwordHash?: string | null
   googleId?: string | null
   universityId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -388,6 +412,7 @@ export type UserUpdateManyMutationInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -399,6 +424,7 @@ export type UserUncheckedUpdateManyInput = {
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   universityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -410,6 +436,7 @@ export type UserCountOrderByAggregateInput = {
   passwordHash?: Prisma.SortOrder
   googleId?: Prisma.SortOrder
   universityId?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -421,6 +448,7 @@ export type UserMaxOrderByAggregateInput = {
   passwordHash?: Prisma.SortOrder
   googleId?: Prisma.SortOrder
   universityId?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -432,6 +460,7 @@ export type UserMinOrderByAggregateInput = {
   passwordHash?: Prisma.SortOrder
   googleId?: Prisma.SortOrder
   universityId?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -466,6 +495,20 @@ export type NullableStringFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type UserCreateNestedOneWithoutStudyProfileInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStudyProfileInput, Prisma.UserUncheckedCreateWithoutStudyProfileInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStudyProfileInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutStudyProfileNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStudyProfileInput, Prisma.UserUncheckedCreateWithoutStudyProfileInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStudyProfileInput
+  upsert?: Prisma.UserUpsertWithoutStudyProfileInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStudyProfileInput, Prisma.UserUpdateWithoutStudyProfileInput>, Prisma.UserUncheckedUpdateWithoutStudyProfileInput>
 }
 
 export type UserCreateNestedOneWithoutEnrollmentsInput = {
@@ -638,12 +681,113 @@ export type UserUpdateOneRequiredWithoutActivitiesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutActivitiesInput, Prisma.UserUpdateWithoutActivitiesInput>, Prisma.UserUncheckedUpdateWithoutActivitiesInput>
 }
 
+export type UserCreateWithoutStudyProfileInput = {
+  id?: string
+  email: string
+  name?: string | null
+  passwordHash?: string | null
+  googleId?: string | null
+  role?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  university?: Prisma.UniversityCreateNestedOneWithoutUsersInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  goals?: Prisma.UserGoalCreateNestedManyWithoutUserInput
+  skills?: Prisma.UserSkillCreateNestedManyWithoutUserInput
+  progress?: Prisma.UserProgressCreateNestedManyWithoutUserInput
+  attempts?: Prisma.AssessmentAttemptCreateNestedManyWithoutUserInput
+  bookmarks?: Prisma.BookmarkCreateNestedManyWithoutUserInput
+  activities?: Prisma.DailyActivityCreateNestedManyWithoutUserInput
+  enrollments?: Prisma.ScheduleEnrollmentCreateNestedManyWithoutUserInput
+  paths?: Prisma.LearningPathCreateNestedManyWithoutOwnerInput
+}
+
+export type UserUncheckedCreateWithoutStudyProfileInput = {
+  id?: string
+  email: string
+  name?: string | null
+  passwordHash?: string | null
+  googleId?: string | null
+  universityId?: string | null
+  role?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  goals?: Prisma.UserGoalUncheckedCreateNestedManyWithoutUserInput
+  skills?: Prisma.UserSkillUncheckedCreateNestedManyWithoutUserInput
+  progress?: Prisma.UserProgressUncheckedCreateNestedManyWithoutUserInput
+  attempts?: Prisma.AssessmentAttemptUncheckedCreateNestedManyWithoutUserInput
+  bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutUserInput
+  activities?: Prisma.DailyActivityUncheckedCreateNestedManyWithoutUserInput
+  enrollments?: Prisma.ScheduleEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  paths?: Prisma.LearningPathUncheckedCreateNestedManyWithoutOwnerInput
+}
+
+export type UserCreateOrConnectWithoutStudyProfileInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutStudyProfileInput, Prisma.UserUncheckedCreateWithoutStudyProfileInput>
+}
+
+export type UserUpsertWithoutStudyProfileInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutStudyProfileInput, Prisma.UserUncheckedUpdateWithoutStudyProfileInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutStudyProfileInput, Prisma.UserUncheckedCreateWithoutStudyProfileInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutStudyProfileInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutStudyProfileInput, Prisma.UserUncheckedUpdateWithoutStudyProfileInput>
+}
+
+export type UserUpdateWithoutStudyProfileInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  university?: Prisma.UniversityUpdateOneWithoutUsersNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  goals?: Prisma.UserGoalUpdateManyWithoutUserNestedInput
+  skills?: Prisma.UserSkillUpdateManyWithoutUserNestedInput
+  progress?: Prisma.UserProgressUpdateManyWithoutUserNestedInput
+  attempts?: Prisma.AssessmentAttemptUpdateManyWithoutUserNestedInput
+  bookmarks?: Prisma.BookmarkUpdateManyWithoutUserNestedInput
+  activities?: Prisma.DailyActivityUpdateManyWithoutUserNestedInput
+  enrollments?: Prisma.ScheduleEnrollmentUpdateManyWithoutUserNestedInput
+  paths?: Prisma.LearningPathUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutStudyProfileInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  universityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  goals?: Prisma.UserGoalUncheckedUpdateManyWithoutUserNestedInput
+  skills?: Prisma.UserSkillUncheckedUpdateManyWithoutUserNestedInput
+  progress?: Prisma.UserProgressUncheckedUpdateManyWithoutUserNestedInput
+  attempts?: Prisma.AssessmentAttemptUncheckedUpdateManyWithoutUserNestedInput
+  bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutUserNestedInput
+  activities?: Prisma.DailyActivityUncheckedUpdateManyWithoutUserNestedInput
+  enrollments?: Prisma.ScheduleEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  paths?: Prisma.LearningPathUncheckedUpdateManyWithoutOwnerNestedInput
+}
+
 export type UserCreateWithoutEnrollmentsInput = {
   id?: string
   email: string
   name?: string | null
   passwordHash?: string | null
   googleId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   university?: Prisma.UniversityCreateNestedOneWithoutUsersInput
@@ -655,6 +799,7 @@ export type UserCreateWithoutEnrollmentsInput = {
   bookmarks?: Prisma.BookmarkCreateNestedManyWithoutUserInput
   activities?: Prisma.DailyActivityCreateNestedManyWithoutUserInput
   paths?: Prisma.LearningPathCreateNestedManyWithoutOwnerInput
+  studyProfile?: Prisma.StudyProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutEnrollmentsInput = {
@@ -664,6 +809,7 @@ export type UserUncheckedCreateWithoutEnrollmentsInput = {
   passwordHash?: string | null
   googleId?: string | null
   universityId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -674,6 +820,7 @@ export type UserUncheckedCreateWithoutEnrollmentsInput = {
   bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutUserInput
   activities?: Prisma.DailyActivityUncheckedCreateNestedManyWithoutUserInput
   paths?: Prisma.LearningPathUncheckedCreateNestedManyWithoutOwnerInput
+  studyProfile?: Prisma.StudyProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutEnrollmentsInput = {
@@ -698,6 +845,7 @@ export type UserUpdateWithoutEnrollmentsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   university?: Prisma.UniversityUpdateOneWithoutUsersNestedInput
@@ -709,6 +857,7 @@ export type UserUpdateWithoutEnrollmentsInput = {
   bookmarks?: Prisma.BookmarkUpdateManyWithoutUserNestedInput
   activities?: Prisma.DailyActivityUpdateManyWithoutUserNestedInput
   paths?: Prisma.LearningPathUpdateManyWithoutOwnerNestedInput
+  studyProfile?: Prisma.StudyProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEnrollmentsInput = {
@@ -718,6 +867,7 @@ export type UserUncheckedUpdateWithoutEnrollmentsInput = {
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   universityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -728,6 +878,7 @@ export type UserUncheckedUpdateWithoutEnrollmentsInput = {
   bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutUserNestedInput
   activities?: Prisma.DailyActivityUncheckedUpdateManyWithoutUserNestedInput
   paths?: Prisma.LearningPathUncheckedUpdateManyWithoutOwnerNestedInput
+  studyProfile?: Prisma.StudyProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -736,6 +887,7 @@ export type UserCreateWithoutSessionsInput = {
   name?: string | null
   passwordHash?: string | null
   googleId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   university?: Prisma.UniversityCreateNestedOneWithoutUsersInput
@@ -747,6 +899,7 @@ export type UserCreateWithoutSessionsInput = {
   activities?: Prisma.DailyActivityCreateNestedManyWithoutUserInput
   enrollments?: Prisma.ScheduleEnrollmentCreateNestedManyWithoutUserInput
   paths?: Prisma.LearningPathCreateNestedManyWithoutOwnerInput
+  studyProfile?: Prisma.StudyProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -756,6 +909,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   passwordHash?: string | null
   googleId?: string | null
   universityId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   goals?: Prisma.UserGoalUncheckedCreateNestedManyWithoutUserInput
@@ -766,6 +920,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   activities?: Prisma.DailyActivityUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.ScheduleEnrollmentUncheckedCreateNestedManyWithoutUserInput
   paths?: Prisma.LearningPathUncheckedCreateNestedManyWithoutOwnerInput
+  studyProfile?: Prisma.StudyProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -790,6 +945,7 @@ export type UserUpdateWithoutSessionsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   university?: Prisma.UniversityUpdateOneWithoutUsersNestedInput
@@ -801,6 +957,7 @@ export type UserUpdateWithoutSessionsInput = {
   activities?: Prisma.DailyActivityUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.ScheduleEnrollmentUpdateManyWithoutUserNestedInput
   paths?: Prisma.LearningPathUpdateManyWithoutOwnerNestedInput
+  studyProfile?: Prisma.StudyProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -810,6 +967,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   universityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   goals?: Prisma.UserGoalUncheckedUpdateManyWithoutUserNestedInput
@@ -820,6 +978,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   activities?: Prisma.DailyActivityUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.ScheduleEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   paths?: Prisma.LearningPathUncheckedUpdateManyWithoutOwnerNestedInput
+  studyProfile?: Prisma.StudyProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutUniversityInput = {
@@ -828,6 +987,7 @@ export type UserCreateWithoutUniversityInput = {
   name?: string | null
   passwordHash?: string | null
   googleId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -839,6 +999,7 @@ export type UserCreateWithoutUniversityInput = {
   activities?: Prisma.DailyActivityCreateNestedManyWithoutUserInput
   enrollments?: Prisma.ScheduleEnrollmentCreateNestedManyWithoutUserInput
   paths?: Prisma.LearningPathCreateNestedManyWithoutOwnerInput
+  studyProfile?: Prisma.StudyProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutUniversityInput = {
@@ -847,6 +1008,7 @@ export type UserUncheckedCreateWithoutUniversityInput = {
   name?: string | null
   passwordHash?: string | null
   googleId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -858,6 +1020,7 @@ export type UserUncheckedCreateWithoutUniversityInput = {
   activities?: Prisma.DailyActivityUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.ScheduleEnrollmentUncheckedCreateNestedManyWithoutUserInput
   paths?: Prisma.LearningPathUncheckedCreateNestedManyWithoutOwnerInput
+  studyProfile?: Prisma.StudyProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutUniversityInput = {
@@ -895,6 +1058,7 @@ export type UserScalarWhereInput = {
   passwordHash?: Prisma.StringNullableFilter<"User"> | string | null
   googleId?: Prisma.StringNullableFilter<"User"> | string | null
   universityId?: Prisma.StringNullableFilter<"User"> | string | null
+  role?: Prisma.StringFilter<"User"> | string
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
 }
@@ -905,6 +1069,7 @@ export type UserCreateWithoutPathsInput = {
   name?: string | null
   passwordHash?: string | null
   googleId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   university?: Prisma.UniversityCreateNestedOneWithoutUsersInput
@@ -916,6 +1081,7 @@ export type UserCreateWithoutPathsInput = {
   bookmarks?: Prisma.BookmarkCreateNestedManyWithoutUserInput
   activities?: Prisma.DailyActivityCreateNestedManyWithoutUserInput
   enrollments?: Prisma.ScheduleEnrollmentCreateNestedManyWithoutUserInput
+  studyProfile?: Prisma.StudyProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPathsInput = {
@@ -925,6 +1091,7 @@ export type UserUncheckedCreateWithoutPathsInput = {
   passwordHash?: string | null
   googleId?: string | null
   universityId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -935,6 +1102,7 @@ export type UserUncheckedCreateWithoutPathsInput = {
   bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutUserInput
   activities?: Prisma.DailyActivityUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.ScheduleEnrollmentUncheckedCreateNestedManyWithoutUserInput
+  studyProfile?: Prisma.StudyProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPathsInput = {
@@ -959,6 +1127,7 @@ export type UserUpdateWithoutPathsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   university?: Prisma.UniversityUpdateOneWithoutUsersNestedInput
@@ -970,6 +1139,7 @@ export type UserUpdateWithoutPathsInput = {
   bookmarks?: Prisma.BookmarkUpdateManyWithoutUserNestedInput
   activities?: Prisma.DailyActivityUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.ScheduleEnrollmentUpdateManyWithoutUserNestedInput
+  studyProfile?: Prisma.StudyProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPathsInput = {
@@ -979,6 +1149,7 @@ export type UserUncheckedUpdateWithoutPathsInput = {
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   universityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -989,6 +1160,7 @@ export type UserUncheckedUpdateWithoutPathsInput = {
   bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutUserNestedInput
   activities?: Prisma.DailyActivityUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.ScheduleEnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  studyProfile?: Prisma.StudyProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutGoalsInput = {
@@ -997,6 +1169,7 @@ export type UserCreateWithoutGoalsInput = {
   name?: string | null
   passwordHash?: string | null
   googleId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   university?: Prisma.UniversityCreateNestedOneWithoutUsersInput
@@ -1008,6 +1181,7 @@ export type UserCreateWithoutGoalsInput = {
   activities?: Prisma.DailyActivityCreateNestedManyWithoutUserInput
   enrollments?: Prisma.ScheduleEnrollmentCreateNestedManyWithoutUserInput
   paths?: Prisma.LearningPathCreateNestedManyWithoutOwnerInput
+  studyProfile?: Prisma.StudyProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutGoalsInput = {
@@ -1017,6 +1191,7 @@ export type UserUncheckedCreateWithoutGoalsInput = {
   passwordHash?: string | null
   googleId?: string | null
   universityId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -1027,6 +1202,7 @@ export type UserUncheckedCreateWithoutGoalsInput = {
   activities?: Prisma.DailyActivityUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.ScheduleEnrollmentUncheckedCreateNestedManyWithoutUserInput
   paths?: Prisma.LearningPathUncheckedCreateNestedManyWithoutOwnerInput
+  studyProfile?: Prisma.StudyProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutGoalsInput = {
@@ -1051,6 +1227,7 @@ export type UserUpdateWithoutGoalsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   university?: Prisma.UniversityUpdateOneWithoutUsersNestedInput
@@ -1062,6 +1239,7 @@ export type UserUpdateWithoutGoalsInput = {
   activities?: Prisma.DailyActivityUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.ScheduleEnrollmentUpdateManyWithoutUserNestedInput
   paths?: Prisma.LearningPathUpdateManyWithoutOwnerNestedInput
+  studyProfile?: Prisma.StudyProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGoalsInput = {
@@ -1071,6 +1249,7 @@ export type UserUncheckedUpdateWithoutGoalsInput = {
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   universityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1081,6 +1260,7 @@ export type UserUncheckedUpdateWithoutGoalsInput = {
   activities?: Prisma.DailyActivityUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.ScheduleEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   paths?: Prisma.LearningPathUncheckedUpdateManyWithoutOwnerNestedInput
+  studyProfile?: Prisma.StudyProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSkillsInput = {
@@ -1089,6 +1269,7 @@ export type UserCreateWithoutSkillsInput = {
   name?: string | null
   passwordHash?: string | null
   googleId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   university?: Prisma.UniversityCreateNestedOneWithoutUsersInput
@@ -1100,6 +1281,7 @@ export type UserCreateWithoutSkillsInput = {
   activities?: Prisma.DailyActivityCreateNestedManyWithoutUserInput
   enrollments?: Prisma.ScheduleEnrollmentCreateNestedManyWithoutUserInput
   paths?: Prisma.LearningPathCreateNestedManyWithoutOwnerInput
+  studyProfile?: Prisma.StudyProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSkillsInput = {
@@ -1109,6 +1291,7 @@ export type UserUncheckedCreateWithoutSkillsInput = {
   passwordHash?: string | null
   googleId?: string | null
   universityId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -1119,6 +1302,7 @@ export type UserUncheckedCreateWithoutSkillsInput = {
   activities?: Prisma.DailyActivityUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.ScheduleEnrollmentUncheckedCreateNestedManyWithoutUserInput
   paths?: Prisma.LearningPathUncheckedCreateNestedManyWithoutOwnerInput
+  studyProfile?: Prisma.StudyProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSkillsInput = {
@@ -1143,6 +1327,7 @@ export type UserUpdateWithoutSkillsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   university?: Prisma.UniversityUpdateOneWithoutUsersNestedInput
@@ -1154,6 +1339,7 @@ export type UserUpdateWithoutSkillsInput = {
   activities?: Prisma.DailyActivityUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.ScheduleEnrollmentUpdateManyWithoutUserNestedInput
   paths?: Prisma.LearningPathUpdateManyWithoutOwnerNestedInput
+  studyProfile?: Prisma.StudyProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSkillsInput = {
@@ -1163,6 +1349,7 @@ export type UserUncheckedUpdateWithoutSkillsInput = {
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   universityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1173,6 +1360,7 @@ export type UserUncheckedUpdateWithoutSkillsInput = {
   activities?: Prisma.DailyActivityUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.ScheduleEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   paths?: Prisma.LearningPathUncheckedUpdateManyWithoutOwnerNestedInput
+  studyProfile?: Prisma.StudyProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProgressInput = {
@@ -1181,6 +1369,7 @@ export type UserCreateWithoutProgressInput = {
   name?: string | null
   passwordHash?: string | null
   googleId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   university?: Prisma.UniversityCreateNestedOneWithoutUsersInput
@@ -1192,6 +1381,7 @@ export type UserCreateWithoutProgressInput = {
   activities?: Prisma.DailyActivityCreateNestedManyWithoutUserInput
   enrollments?: Prisma.ScheduleEnrollmentCreateNestedManyWithoutUserInput
   paths?: Prisma.LearningPathCreateNestedManyWithoutOwnerInput
+  studyProfile?: Prisma.StudyProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProgressInput = {
@@ -1201,6 +1391,7 @@ export type UserUncheckedCreateWithoutProgressInput = {
   passwordHash?: string | null
   googleId?: string | null
   universityId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -1211,6 +1402,7 @@ export type UserUncheckedCreateWithoutProgressInput = {
   activities?: Prisma.DailyActivityUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.ScheduleEnrollmentUncheckedCreateNestedManyWithoutUserInput
   paths?: Prisma.LearningPathUncheckedCreateNestedManyWithoutOwnerInput
+  studyProfile?: Prisma.StudyProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProgressInput = {
@@ -1235,6 +1427,7 @@ export type UserUpdateWithoutProgressInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   university?: Prisma.UniversityUpdateOneWithoutUsersNestedInput
@@ -1246,6 +1439,7 @@ export type UserUpdateWithoutProgressInput = {
   activities?: Prisma.DailyActivityUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.ScheduleEnrollmentUpdateManyWithoutUserNestedInput
   paths?: Prisma.LearningPathUpdateManyWithoutOwnerNestedInput
+  studyProfile?: Prisma.StudyProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProgressInput = {
@@ -1255,6 +1449,7 @@ export type UserUncheckedUpdateWithoutProgressInput = {
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   universityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1265,6 +1460,7 @@ export type UserUncheckedUpdateWithoutProgressInput = {
   activities?: Prisma.DailyActivityUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.ScheduleEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   paths?: Prisma.LearningPathUncheckedUpdateManyWithoutOwnerNestedInput
+  studyProfile?: Prisma.StudyProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAttemptsInput = {
@@ -1273,6 +1469,7 @@ export type UserCreateWithoutAttemptsInput = {
   name?: string | null
   passwordHash?: string | null
   googleId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   university?: Prisma.UniversityCreateNestedOneWithoutUsersInput
@@ -1284,6 +1481,7 @@ export type UserCreateWithoutAttemptsInput = {
   activities?: Prisma.DailyActivityCreateNestedManyWithoutUserInput
   enrollments?: Prisma.ScheduleEnrollmentCreateNestedManyWithoutUserInput
   paths?: Prisma.LearningPathCreateNestedManyWithoutOwnerInput
+  studyProfile?: Prisma.StudyProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAttemptsInput = {
@@ -1293,6 +1491,7 @@ export type UserUncheckedCreateWithoutAttemptsInput = {
   passwordHash?: string | null
   googleId?: string | null
   universityId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -1303,6 +1502,7 @@ export type UserUncheckedCreateWithoutAttemptsInput = {
   activities?: Prisma.DailyActivityUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.ScheduleEnrollmentUncheckedCreateNestedManyWithoutUserInput
   paths?: Prisma.LearningPathUncheckedCreateNestedManyWithoutOwnerInput
+  studyProfile?: Prisma.StudyProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAttemptsInput = {
@@ -1327,6 +1527,7 @@ export type UserUpdateWithoutAttemptsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   university?: Prisma.UniversityUpdateOneWithoutUsersNestedInput
@@ -1338,6 +1539,7 @@ export type UserUpdateWithoutAttemptsInput = {
   activities?: Prisma.DailyActivityUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.ScheduleEnrollmentUpdateManyWithoutUserNestedInput
   paths?: Prisma.LearningPathUpdateManyWithoutOwnerNestedInput
+  studyProfile?: Prisma.StudyProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAttemptsInput = {
@@ -1347,6 +1549,7 @@ export type UserUncheckedUpdateWithoutAttemptsInput = {
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   universityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1357,6 +1560,7 @@ export type UserUncheckedUpdateWithoutAttemptsInput = {
   activities?: Prisma.DailyActivityUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.ScheduleEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   paths?: Prisma.LearningPathUncheckedUpdateManyWithoutOwnerNestedInput
+  studyProfile?: Prisma.StudyProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutBookmarksInput = {
@@ -1365,6 +1569,7 @@ export type UserCreateWithoutBookmarksInput = {
   name?: string | null
   passwordHash?: string | null
   googleId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   university?: Prisma.UniversityCreateNestedOneWithoutUsersInput
@@ -1376,6 +1581,7 @@ export type UserCreateWithoutBookmarksInput = {
   activities?: Prisma.DailyActivityCreateNestedManyWithoutUserInput
   enrollments?: Prisma.ScheduleEnrollmentCreateNestedManyWithoutUserInput
   paths?: Prisma.LearningPathCreateNestedManyWithoutOwnerInput
+  studyProfile?: Prisma.StudyProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBookmarksInput = {
@@ -1385,6 +1591,7 @@ export type UserUncheckedCreateWithoutBookmarksInput = {
   passwordHash?: string | null
   googleId?: string | null
   universityId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -1395,6 +1602,7 @@ export type UserUncheckedCreateWithoutBookmarksInput = {
   activities?: Prisma.DailyActivityUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.ScheduleEnrollmentUncheckedCreateNestedManyWithoutUserInput
   paths?: Prisma.LearningPathUncheckedCreateNestedManyWithoutOwnerInput
+  studyProfile?: Prisma.StudyProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBookmarksInput = {
@@ -1419,6 +1627,7 @@ export type UserUpdateWithoutBookmarksInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   university?: Prisma.UniversityUpdateOneWithoutUsersNestedInput
@@ -1430,6 +1639,7 @@ export type UserUpdateWithoutBookmarksInput = {
   activities?: Prisma.DailyActivityUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.ScheduleEnrollmentUpdateManyWithoutUserNestedInput
   paths?: Prisma.LearningPathUpdateManyWithoutOwnerNestedInput
+  studyProfile?: Prisma.StudyProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBookmarksInput = {
@@ -1439,6 +1649,7 @@ export type UserUncheckedUpdateWithoutBookmarksInput = {
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   universityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1449,6 +1660,7 @@ export type UserUncheckedUpdateWithoutBookmarksInput = {
   activities?: Prisma.DailyActivityUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.ScheduleEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   paths?: Prisma.LearningPathUncheckedUpdateManyWithoutOwnerNestedInput
+  studyProfile?: Prisma.StudyProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutActivitiesInput = {
@@ -1457,6 +1669,7 @@ export type UserCreateWithoutActivitiesInput = {
   name?: string | null
   passwordHash?: string | null
   googleId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   university?: Prisma.UniversityCreateNestedOneWithoutUsersInput
@@ -1468,6 +1681,7 @@ export type UserCreateWithoutActivitiesInput = {
   bookmarks?: Prisma.BookmarkCreateNestedManyWithoutUserInput
   enrollments?: Prisma.ScheduleEnrollmentCreateNestedManyWithoutUserInput
   paths?: Prisma.LearningPathCreateNestedManyWithoutOwnerInput
+  studyProfile?: Prisma.StudyProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutActivitiesInput = {
@@ -1477,6 +1691,7 @@ export type UserUncheckedCreateWithoutActivitiesInput = {
   passwordHash?: string | null
   googleId?: string | null
   universityId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -1487,6 +1702,7 @@ export type UserUncheckedCreateWithoutActivitiesInput = {
   bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.ScheduleEnrollmentUncheckedCreateNestedManyWithoutUserInput
   paths?: Prisma.LearningPathUncheckedCreateNestedManyWithoutOwnerInput
+  studyProfile?: Prisma.StudyProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutActivitiesInput = {
@@ -1511,6 +1727,7 @@ export type UserUpdateWithoutActivitiesInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   university?: Prisma.UniversityUpdateOneWithoutUsersNestedInput
@@ -1522,6 +1739,7 @@ export type UserUpdateWithoutActivitiesInput = {
   bookmarks?: Prisma.BookmarkUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.ScheduleEnrollmentUpdateManyWithoutUserNestedInput
   paths?: Prisma.LearningPathUpdateManyWithoutOwnerNestedInput
+  studyProfile?: Prisma.StudyProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutActivitiesInput = {
@@ -1531,6 +1749,7 @@ export type UserUncheckedUpdateWithoutActivitiesInput = {
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   universityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1541,6 +1760,7 @@ export type UserUncheckedUpdateWithoutActivitiesInput = {
   bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.ScheduleEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   paths?: Prisma.LearningPathUncheckedUpdateManyWithoutOwnerNestedInput
+  studyProfile?: Prisma.StudyProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyUniversityInput = {
@@ -1549,6 +1769,7 @@ export type UserCreateManyUniversityInput = {
   name?: string | null
   passwordHash?: string | null
   googleId?: string | null
+  role?: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1559,6 +1780,7 @@ export type UserUpdateWithoutUniversityInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -1570,6 +1792,7 @@ export type UserUpdateWithoutUniversityInput = {
   activities?: Prisma.DailyActivityUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.ScheduleEnrollmentUpdateManyWithoutUserNestedInput
   paths?: Prisma.LearningPathUpdateManyWithoutOwnerNestedInput
+  studyProfile?: Prisma.StudyProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUniversityInput = {
@@ -1578,6 +1801,7 @@ export type UserUncheckedUpdateWithoutUniversityInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1589,6 +1813,7 @@ export type UserUncheckedUpdateWithoutUniversityInput = {
   activities?: Prisma.DailyActivityUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.ScheduleEnrollmentUncheckedUpdateManyWithoutUserNestedInput
   paths?: Prisma.LearningPathUncheckedUpdateManyWithoutOwnerNestedInput
+  studyProfile?: Prisma.StudyProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutUniversityInput = {
@@ -1597,6 +1822,7 @@ export type UserUncheckedUpdateManyWithoutUniversityInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1711,6 +1937,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   passwordHash?: boolean
   googleId?: boolean
   universityId?: boolean
+  role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   university?: boolean | Prisma.User$universityArgs<ExtArgs>
@@ -1723,6 +1950,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   activities?: boolean | Prisma.User$activitiesArgs<ExtArgs>
   enrollments?: boolean | Prisma.User$enrollmentsArgs<ExtArgs>
   paths?: boolean | Prisma.User$pathsArgs<ExtArgs>
+  studyProfile?: boolean | Prisma.User$studyProfileArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1733,6 +1961,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   passwordHash?: boolean
   googleId?: boolean
   universityId?: boolean
+  role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   university?: boolean | Prisma.User$universityArgs<ExtArgs>
@@ -1745,6 +1974,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   passwordHash?: boolean
   googleId?: boolean
   universityId?: boolean
+  role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   university?: boolean | Prisma.User$universityArgs<ExtArgs>
@@ -1757,11 +1987,12 @@ export type UserSelectScalar = {
   passwordHash?: boolean
   googleId?: boolean
   universityId?: boolean
+  role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "passwordHash" | "googleId" | "universityId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "passwordHash" | "googleId" | "universityId" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   university?: boolean | Prisma.User$universityArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
@@ -1773,6 +2004,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   activities?: boolean | Prisma.User$activitiesArgs<ExtArgs>
   enrollments?: boolean | Prisma.User$enrollmentsArgs<ExtArgs>
   paths?: boolean | Prisma.User$pathsArgs<ExtArgs>
+  studyProfile?: boolean | Prisma.User$studyProfileArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1795,6 +2027,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     activities: Prisma.$DailyActivityPayload<ExtArgs>[]
     enrollments: Prisma.$ScheduleEnrollmentPayload<ExtArgs>[]
     paths: Prisma.$LearningPathPayload<ExtArgs>[]
+    studyProfile: Prisma.$StudyProfilePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1803,6 +2036,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     passwordHash: string | null
     googleId: string | null
     universityId: string | null
+    role: string
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -2209,6 +2443,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   activities<T extends Prisma.User$activitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$activitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DailyActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   enrollments<T extends Prisma.User$enrollmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$enrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScheduleEnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   paths<T extends Prisma.User$pathsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$pathsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LearningPathPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  studyProfile<T extends Prisma.User$studyProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$studyProfileArgs<ExtArgs>>): Prisma.Prisma__StudyProfileClient<runtime.Types.Result.GetResult<Prisma.$StudyProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2244,6 +2479,7 @@ export interface UserFieldRefs {
   readonly passwordHash: Prisma.FieldRef<"User", 'String'>
   readonly googleId: Prisma.FieldRef<"User", 'String'>
   readonly universityId: Prisma.FieldRef<"User", 'String'>
+  readonly role: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
@@ -2877,6 +3113,25 @@ export type User$pathsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
   take?: number
   skip?: number
   distinct?: Prisma.LearningPathScalarFieldEnum | Prisma.LearningPathScalarFieldEnum[]
+}
+
+/**
+ * User.studyProfile
+ */
+export type User$studyProfileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StudyProfile
+   */
+  select?: Prisma.StudyProfileSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StudyProfile
+   */
+  omit?: Prisma.StudyProfileOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StudyProfileInclude<ExtArgs> | null
+  where?: Prisma.StudyProfileWhereInput
 }
 
 /**

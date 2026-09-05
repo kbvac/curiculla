@@ -30,6 +30,7 @@ model User {
   passwordHash String? // null for OAuth-only accounts
   googleId     String?  @unique
   universityId String? // home university chosen during onboarding
+  role         String  @default("USER") // USER | CONTRIBUTOR | ADMIN — l'équipe du programme peut ajouter des liens de cours
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
@@ -43,6 +44,22 @@ model User {
   activities  DailyActivity[]
   enrollments ScheduleEnrollment[]
   paths       LearningPath[]
+  studyProfile StudyProfile?
+}
+
+// Disponibilités de l'apprenant — le questionnaire qui pilote l'emploi
+// du temps dynamique : jours étudiés, minutes par jour, heure préférée.
+model StudyProfile {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  days           String   @default("[1,2,3,4,5]") // JSON: index getDay() 0=Dim..6=Sam
+  minutesPerDay  Int      @default(60)
+  startTime      String   @default("09:00") // "HH:MM"
+  sessionMinutes Int      @default(50)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 // Personal weekly schedule — the student follows N courses in parallel,
@@ -324,7 +341,7 @@ model LearningPath {
   order           Int     @default(0)
 
   domain    Domain             @relation(fields: [domainId], references: [id])
-  owner     User?              @relation(fields: [ownerId], references: [id])
+  owner     User?              @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   steps     LearningPathStep[]
   userGoals UserGoal[]
 
@@ -339,6 +356,7 @@ model LearningPathStep {
   courseId    String? // null when the step is a skill or a custom entry
   customTitle String? // free-text step created in the personal builder
   customUrl   String? // optional link for a custom step
+  origin      String  @default("IMPORT") // IMPORT = official adapter data, MANUAL = hand-added (preserved on rebuild)
   phase       String // FOUNDATIONS | CORE | ADVANCED | SPECIALIZATION | PROJECTS | ...
   order       Int
   isRequired  Boolean @default(true) // false = "choose one" alternative

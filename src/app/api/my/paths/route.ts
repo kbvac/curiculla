@@ -20,6 +20,7 @@ const createSchema = z.object({
   name: z.string().min(2).max(120),
   tagline: z.string().max(200).optional(),
   domainSlug: z.string().min(1),
+  cloneFrom: z.string().min(1).optional(),
 });
 
 function slugify(name: string): string {
@@ -60,5 +61,29 @@ export const POST = handle(async (request: Request) => {
     },
   });
 
-  return json(path, { status: 201 });
+  // Clone mode: deep-copy every step of an existing path (official or library)
+  let cloned = 0;
+  if (parsed.data.cloneFrom) {
+    const source = await db.learningPath.findUnique({
+      where: { slug: parsed.data.cloneFrom },
+      include: { steps: { orderBy: { order: "asc" } } },
+    });
+    if (!source) return badRequest("Parcours source inconnu");
+    await db.learningPathStep.createMany({
+      data: source.steps.map((st) => ({
+        pathId: path.id,
+        skillId: st.skillId,
+        courseId: st.courseId,
+        customTitle: st.customTitle,
+        customUrl: st.customUrl,
+        phase: st.phase,
+        order: st.order,
+        isRequired: st.isRequired,
+        origin: "MANUAL", // personal copy: everything is hand-owned from here
+      })),
+    });
+    cloned = source.steps.length;
+  }
+
+  return json({ ...path, cloned }, { status: 201 });
 });

@@ -135,15 +135,47 @@ model Degree {
 }
 
 model Curriculum {
-  id       String  @id @default(cuid())
-  degreeId String
-  name     String? // version / cohort label
-  source   String? // URL of the official program page
+  id           String                 @id @default(cuid())
+  degreeId     String
+  name         String? // version / cohort label
+  source       String? // URL of the official program page
 
-  degree  Degree             @relation(fields: [degreeId], references: [id])
-  courses CurriculumCourse[]
+  degree       Degree                 @relation(fields: [degreeId], references: [id])
+  courses      CurriculumCourse[]
+  requirements CurriculumRequirement[]
 
   @@index([degreeId])
+}
+
+model CurriculumRequirement {
+  id           String   @id @default(cuid())
+  curriculumId String
+  name         String
+  section      String // LOWER_DIVISION | UPPER_DIVISION | ELECTIVES
+  type         String // REQUIRED | CHOICE | UNIT_MINIMUM | COURSE_PAIR
+  minimumUnits Int?
+  minimumCount Int?
+  order        Int      @default(0)
+  sourceText   String? // exact/condensed official wording
+
+  curriculum Curriculum                    @relation(fields: [curriculumId], references: [id], onDelete: Cascade)
+  options    CurriculumRequirementOption[]
+
+  @@index([curriculumId])
+}
+
+model CurriculumRequirementOption {
+  id            String @id @default(cuid())
+  requirementId String
+  courseId      String
+  groupKey      String? // e.g. ARCHITECTURE_A / ARCHITECTURE_B
+  order         Int     @default(0)
+
+  requirement CurriculumRequirement @relation(fields: [requirementId], references: [id], onDelete: Cascade)
+  course      Course                 @relation(fields: [courseId], references: [id])
+
+  @@unique([requirementId, courseId])
+  @@index([courseId])
 }
 
 model CurriculumCourse {
@@ -259,7 +291,10 @@ model Course {
 
   prerequisites CoursePrerequisite[] @relation("CoursePrerequisites")
   unlocks       CoursePrerequisite[] @relation("CoursePrerequisitesBack")
+  corequisites  CourseCorequisite[]  @relation("CourseCorequisites")
+  corequiredBy  CourseCorequisite[]  @relation("CourseCorequisitesBack")
   pathSteps     LearningPathStep[]
+  curriculumOptions CurriculumRequirementOption[]
 
   @@index([universityId])
   @@index([subjectId])
@@ -274,6 +309,17 @@ model CoursePrerequisite {
 
   @@id([courseId, prerequisiteId])
   @@index([prerequisiteId])
+}
+
+model CourseCorequisite {
+  courseId       String
+  corequisiteId  String
+
+  course       Course @relation("CourseCorequisites", fields: [courseId], references: [id], onDelete: Cascade)
+  corequisite  Course @relation("CourseCorequisitesBack", fields: [corequisiteId], references: [id], onDelete: Cascade)
+
+  @@id([courseId, corequisiteId])
+  @@index([corequisiteId])
 }
 
 model Resource {

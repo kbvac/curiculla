@@ -47,6 +47,9 @@ async function loadPath(slug: string) {
                 include: { prerequisite: { select: { slug: true, code: true, title: true } } },
               },
               unlocks: { include: { course: { select: { code: true } } } },
+              corequisites: {
+                include: { corequisite: { select: { code: true, title: true } } },
+              },
               _count: { select: { resources: true } },
             },
           },
@@ -69,6 +72,19 @@ export default async function PathDetailPage({ params }: { params: Promise<{ slu
   const path = await loadPath(slug);
   if (!path) notFound();
   const hasGoal = user ? path.userGoals.some((g) => g.userId === user.id) : false;
+
+  const requirements = slug === "ucsd-bs-computer-science"
+    ? await db.curriculumRequirement.findMany({
+        where: { curriculum: { degree: { slug: "ucsd-bs-computer-science" } } },
+        include: {
+          options: {
+            include: { course: { select: { slug: true, code: true, title: true } } },
+            orderBy: { order: "asc" },
+          },
+        },
+        orderBy: [{ section: "asc" }, { order: "asc" }],
+      })
+    : [];
 
   const progress = user ? await getPathProgress(user.id, slug) : null;
 
@@ -219,6 +235,52 @@ export default async function PathDetailPage({ params }: { params: Promise<{ slu
         </div>
       )}
 
+      {/* Official constraints: OR groups, unit minima and paired courses. */}
+      {requirements.length > 0 && (
+        <section className="mb-10 border border-border bg-card">
+          <div className="border-b border-border px-5 py-3">
+            <p className="data-label">Règles officielles du programme</p>
+            <p className="mt-1 text-sm text-fg-muted">
+              Ces contraintes viennent du catalogue UCSD 2022–23. Elles ne sont pas
+              aplaties en une simple liste de cours.
+            </p>
+          </div>
+          <div className="divide-y divide-border">
+            {requirements.map((r) => (
+              <div key={r.id} className="px-5 py-3">
+                <div className="flex flex-wrap items-baseline justify-between gap-2">
+                  <h3 className="text-sm font-semibold text-fg">{r.name}</h3>
+                  <span className="font-mono text-[11px] uppercase text-fg-faint">
+                    {r.type === "UNIT_MINIMUM"
+                      ? `${r.minimumUnits} unités${r.minimumCount ? ` · ${r.minimumCount} cours` : ""}`
+                      : r.type === "COURSE_PAIR"
+                        ? "paire obligatoire"
+                        : r.type === "CHOICE"
+                          ? `choix · ${r.minimumCount ?? 1}`
+                          : "requis"}
+                  </span>
+                </div>
+                {r.options.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    {r.options.map((o) => (
+                      <Link
+                        key={o.id}
+                        href={`/courses/${o.course.slug}`}
+                        className="course-code rounded-sm bg-muted px-1.5 py-1 text-[11px] text-fg-muted hover:bg-accent-light hover:text-accent"
+                      >
+                        {o.course.code}
+                        {o.groupKey ? ` · ${o.groupKey.replace("ARCHITECTURE_", "Track ")}` : ""}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+                <p className="mt-1.5 text-xs text-fg-faint">{r.sourceText}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* ── Phases — le rail de catalogue ─────────────────────────────────── */}
       <div className="space-y-12">
         {[...phases.entries()].map(([phase, blocks], phaseIdx) => {
@@ -281,6 +343,9 @@ export default async function PathDetailPage({ params }: { params: Promise<{ slu
                             .map((u) => u.course.code ?? "")
                             .filter(Boolean)
                             .slice(0, 4)}
+                          corequisites={block.course.corequisites
+                            .map((c) => c.corequisite.code ?? "")
+                            .filter(Boolean)}
                         />
                       </div>
                     );
@@ -444,6 +509,7 @@ function CourseCard({
   percent,
   prereqDone,
   unlocks,
+  corequisites,
   isNext,
 }: {
   course: CourseStep;
@@ -452,6 +518,7 @@ function CourseCard({
   percent: number;
   prereqDone: Array<{ code: string; title: string; done: boolean }>;
   unlocks: string[];
+  corequisites: string[];
   isNext: boolean;
 }) {
   return (
@@ -511,6 +578,20 @@ function CourseCard({
                 <span
                   key={code}
                   className="course-code rounded-sm border border-border px-1.5 py-0.5 text-[11px] font-normal text-fg-muted"
+                >
+                  {code}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {corequisites.length > 0 && (
+            <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+              <span className="data-label">ensemble</span>
+              {corequisites.map((code) => (
+                <span
+                  key={code}
+                  className="course-code rounded-sm border border-accent/30 bg-accent-light px-1.5 py-0.5 text-[11px] font-normal text-accent-dark"
                 >
                   {code}
                 </span>

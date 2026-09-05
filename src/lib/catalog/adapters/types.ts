@@ -15,6 +15,7 @@ export type ParsedCourse = {
   units: number | null;
   description: string;
   prerequisites: string[]; // all course codes mentioned
+  corequisites: string[]; // courses explicitly taken concurrently
   catalogLevel: "LOWER_DIVISION" | "UPPER_DIVISION" | "GRADUATE";
 };
 

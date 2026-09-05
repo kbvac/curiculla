@@ -59,6 +59,8 @@ export const ModelName = {
   Faculty: 'Faculty',
   Degree: 'Degree',
   Curriculum: 'Curriculum',
+  CurriculumRequirement: 'CurriculumRequirement',
+  CurriculumRequirementOption: 'CurriculumRequirementOption',
   CurriculumCourse: 'CurriculumCourse',
   Domain: 'Domain',
   Subject: 'Subject',
@@ -67,6 +69,7 @@ export const ModelName = {
   SkillPrerequisite: 'SkillPrerequisite',
   Course: 'Course',
   CoursePrerequisite: 'CoursePrerequisite',
+  CourseCorequisite: 'CourseCorequisite',
   Resource: 'Resource',
   ResourceSkill: 'ResourceSkill',
   LearningPath: 'LearningPath',
@@ -190,6 +193,32 @@ export const CurriculumScalarFieldEnum = {
 export type CurriculumScalarFieldEnum = (typeof CurriculumScalarFieldEnum)[keyof typeof CurriculumScalarFieldEnum]
 
 
+export const CurriculumRequirementScalarFieldEnum = {
+  id: 'id',
+  curriculumId: 'curriculumId',
+  name: 'name',
+  section: 'section',
+  type: 'type',
+  minimumUnits: 'minimumUnits',
+  minimumCount: 'minimumCount',
+  order: 'order',
+  sourceText: 'sourceText'
+} as const
+
+export type CurriculumRequirementScalarFieldEnum = (typeof CurriculumRequirementScalarFieldEnum)[keyof typeof CurriculumRequirementScalarFieldEnum]
+
+
+export const CurriculumRequirementOptionScalarFieldEnum = {
+  id: 'id',
+  requirementId: 'requirementId',
+  courseId: 'courseId',
+  groupKey: 'groupKey',
+  order: 'order'
+} as const
+
+export type CurriculumRequirementOptionScalarFieldEnum = (typeof CurriculumRequirementOptionScalarFieldEnum)[keyof typeof CurriculumRequirementOptionScalarFieldEnum]
+
+
 export const CurriculumCourseScalarFieldEnum = {
   id: 'id',
   curriculumId: 'curriculumId',
@@ -284,6 +313,14 @@ export const CoursePrerequisiteScalarFieldEnum = {
 } as const
 
 export type CoursePrerequisiteScalarFieldEnum = (typeof CoursePrerequisiteScalarFieldEnum)[keyof typeof CoursePrerequisiteScalarFieldEnum]
+
+
+export const CourseCorequisiteScalarFieldEnum = {
+  courseId: 'courseId',
+  corequisiteId: 'corequisiteId'
+} as const
+
+export type CourseCorequisiteScalarFieldEnum = (typeof CourseCorequisiteScalarFieldEnum)[keyof typeof CourseCorequisiteScalarFieldEnum]
 
 
 export const ResourceScalarFieldEnum = {

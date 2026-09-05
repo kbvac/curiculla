@@ -117,8 +117,12 @@ export async function importUcsdDepartment(dept: string, catalogYear?: string) {
   await prisma.coursePrerequisite.deleteMany({
     where: { OR: [{ courseId: { in: importedIds } }, { prerequisiteId: { in: importedIds } }] },
   });
+  await prisma.courseCorequisite.deleteMany({
+    where: { OR: [{ courseId: { in: importedIds } }, { corequisiteId: { in: importedIds } }] },
+  });
 
   let prereqCreated = 0;
+  let coreqCreated = 0;
   const external = new Set<string>();
   for (const c of keep) {
     const courseId = courseIdByCode.get(c.code);
@@ -137,8 +141,19 @@ export async function importUcsdDepartment(dept: string, catalogYear?: string) {
         external.add(preCode);
       }
     }
+    for (const coreqCode of c.corequisites) {
+      const coreqId = courseIdByCode.get(coreqCode);
+      if (!coreqId) continue;
+      await prisma.courseCorequisite.upsert({
+        where: { courseId_corequisiteId: { courseId, corequisiteId: coreqId } },
+        update: {},
+        create: { courseId, corequisiteId: coreqId },
+      });
+      coreqCreated++;
+    }
   }
   console.log(`   ✓ Prerequisites: ${prereqCreated} edges created`);
+  console.log(`   ✓ Corequisites: ${coreqCreated} edges created`);
   console.log(`   ℹ  External prerequisite codes (other departments, kept out of the graph): ${[...external].sort().join(", ") || "none"}`);
   for (const w of warnings) console.log(`   ⚠ ${w}`);
 
@@ -189,6 +204,9 @@ export async function importUcsdDepartment(dept: string, catalogYear?: string) {
       });
     }
     console.log(`   ✓ Degree "${program.degreeName}": ${memberCodes.size} catalog courses linked (${program.totalUnits ?? "?"} units)`);
+    if (program.degreeName === "BS Computer Science") {
+      await seedBsCsRequirements(curriculum.id, courseIdByCode, program);
+    }
     degreesCreated.push({ slug: dSlug, program });
   }
 
@@ -320,6 +338,112 @@ export async function importUcsdDepartment(dept: string, catalogYear?: string) {
       console.log(`   ℹ  Program courses absent from this catalog (external depts): ${[...missing].sort().join(", ")}`);
     }
   }
+}
+
+type ParsedProgram = Awaited<ReturnType<typeof ucsdAdapter.parseCurriculum>>[number];
+
+/** Persist the official constraint system without flattening OR/unit rules. */
+async function seedBsCsRequirements(
+  curriculumId: string,
+  courseIdByCode: Map<string, string>,
+  program: ParsedProgram,
+) {
+  await prisma.curriculumRequirement.deleteMany({ where: { curriculumId } });
+
+  const createRequirement = async (data: {
+    name: string;
+    section: string;
+    type: string;
+    minimumUnits?: number;
+    minimumCount?: number;
+    order: number;
+    sourceText: string;
+    options?: Array<{ code: string; groupKey?: string }>;
+  }) => {
+    const requirement = await prisma.curriculumRequirement.create({
+      data: {
+        curriculumId,
+        name: data.name,
+        section: data.section,
+        type: data.type,
+        minimumUnits: data.minimumUnits,
+        minimumCount: data.minimumCount,
+        order: data.order,
+        sourceText: data.sourceText,
+      },
+    });
+    for (const [order, option] of (data.options ?? []).entries()) {
+      const courseId = courseIdByCode.get(option.code);
+      if (!courseId) continue;
+      await prisma.curriculumRequirementOption.create({
+        data: { requirementId: requirement.id, courseId, groupKey: option.groupKey, order },
+      });
+    }
+  };
+
+  const options = (codes: string[]) => codes.map((code) => ({ code }));
+
+  await createRequirement({
+    name: "Programming entry", section: "LOWER_DIVISION", type: "CHOICE",
+    minimumCount: 1, order: 1, sourceText: "CSE 8B or CSE 11.",
+    options: options(["CSE 8B", "CSE 11"]),
+  });
+  await createRequirement({
+    name: "CSE lower-division core", section: "LOWER_DIVISION", type: "REQUIRED",
+    order: 2, sourceText: "CSE 12, CSE 15L, CSE 20, CSE 21, CSE 30.",
+    options: options(["CSE 12", "CSE 15L", "CSE 20", "CSE 21", "CSE 30"]),
+  });
+  await createRequirement({
+    name: "Lower-division CSE elective", section: "LOWER_DIVISION", type: "UNIT_MINIMUM",
+    minimumUnits: 2, order: 3,
+    sourceText: "Minimum 2 units from the official CSE lower-division choice list.",
+    options: options(["CSE 3", "CSE 4GS", "CSE 6R", "CSE 6GS", "CSE 8A", "CSE 42", "CSE 86", "CSE 90", "CSE 91", "CSE 95", "CSE 99", "CSE 180", "CSE 180R"]),
+  });
+  await createRequirement({
+    name: "Mathematics", section: "LOWER_DIVISION", type: "UNIT_MINIMUM",
+    minimumUnits: 16, order: 4,
+    sourceText: "MATH 20A, MATH 20B, MATH 20C (or MATH 31BH), and MATH 18 (or MATH 31AH).",
+  });
+  await createRequirement({
+    name: "General science", section: "LOWER_DIVISION", type: "UNIT_MINIMUM",
+    minimumUnits: 8, order: 5,
+    sourceText: "Two courses from the official General Science list.",
+  });
+  await createRequirement({
+    name: "Probability and statistics", section: "LOWER_DIVISION", type: "CHOICE",
+    minimumCount: 1, order: 6,
+    sourceText: "MATH 181A or MATH 183 or ECE 109 or ECON 120A or CSE 103.",
+    options: options(["CSE 103"]),
+  });
+
+  let order = 10;
+  for (const area of program.coreAreas) {
+    const optionsWithGroups = area.codes.map((code) => ({
+      code,
+      groupKey:
+        area.name === "Architecture"
+          ? code.startsWith("CSE 141") ? "ARCHITECTURE_A" : "ARCHITECTURE_B"
+          : undefined,
+    }));
+    await createRequirement({
+      name: area.name,
+      section: "UPPER_DIVISION_CORE",
+      type: area.name === "Architecture" ? "COURSE_PAIR" : area.isAlternative ? "CHOICE" : "REQUIRED",
+      minimumCount: area.isAlternative ? 1 : undefined,
+      order: order++,
+      sourceText: area.isAlternative ? `${area.name}: choose one official option group.` : `${area.name}: ${area.codes.join(", ")}.`,
+      options: optionsWithGroups,
+    });
+  }
+
+  await createRequirement({
+    name: "Upper-division electives", section: "ELECTIVES", type: "UNIT_MINIMUM",
+    minimumUnits: 28, minimumCount: 7, order: 30,
+    sourceText: "Seven upper-division elective courses (28 units), subject to the official CSE constraints.",
+    options: [...courseIdByCode.keys()]
+      .filter((code) => Number(code.match(/\d+/)?.[0] ?? 0) >= 100 && Number(code.match(/\d+/)?.[0] ?? 0) < 190)
+      .map((code) => ({ code })),
+  });
 }
 
 // Run directly: tsx prisma/seed/import-ucsd-dept.ts CSE [2022-23]

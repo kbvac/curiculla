@@ -115,6 +115,17 @@ function parsePrerequisites(description: string): string[] {
   return [...new Set(codes)];
 }
 
+function parseCorequisites(description: string): string[] {
+  const match = description.match(/Prerequisites?:\s*(.+?)(?:\.\s|$)/i);
+  if (!match || !/concurrent|corequisite|concurrently/i.test(match[1])) return [];
+  const clauses = match[1].split(/[;()]|,\s*(?=and\s+)/i);
+  return [...new Set(
+    clauses
+      .filter((clause) => /concurrent|corequisite|concurrently/i.test(clause))
+      .flatMap((clause) => clause.match(COURSE_CODE) ?? []),
+  )];
+}
+
 export function parseCourseCatalog(raw: string): CourseCatalogParseResult {
   const text = normalizeText(raw);
   const lines = text.split("\n");
@@ -129,12 +140,14 @@ export function parseCourseCatalog(raw: string): CourseCatalogParseResult {
     const description = current.body.join(" ").trim();
     const self = current.code;
     const prerequisites = parsePrerequisites(description).filter((c) => c !== self);
+    const corequisites = parseCorequisites(description).filter((c) => c !== self);
     courses.push({
       code: current.code,
       title: current.title,
       units: current.units,
       description,
       prerequisites,
+      corequisites,
       catalogLevel: section,
     });
     current = null;

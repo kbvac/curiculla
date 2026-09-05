@@ -82,6 +82,16 @@ export type Degree = Prisma.DegreeModel
  */
 export type Curriculum = Prisma.CurriculumModel
 /**
+ * Model CurriculumRequirement
+ * 
+ */
+export type CurriculumRequirement = Prisma.CurriculumRequirementModel
+/**
+ * Model CurriculumRequirementOption
+ * 
+ */
+export type CurriculumRequirementOption = Prisma.CurriculumRequirementOptionModel
+/**
  * Model CurriculumCourse
  * 
  */
@@ -121,6 +131,11 @@ export type Course = Prisma.CourseModel
  * 
  */
 export type CoursePrerequisite = Prisma.CoursePrerequisiteModel
+/**
+ * Model CourseCorequisite
+ * 
+ */
+export type CourseCorequisite = Prisma.CourseCorequisiteModel
 /**
  * Model Resource
  * 

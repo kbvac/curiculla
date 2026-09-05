@@ -176,6 +176,7 @@ export type CurriculumWhereInput = {
   source?: Prisma.StringNullableFilter<"Curriculum"> | string | null
   degree?: Prisma.XOR<Prisma.DegreeScalarRelationFilter, Prisma.DegreeWhereInput>
   courses?: Prisma.CurriculumCourseListRelationFilter
+  requirements?: Prisma.CurriculumRequirementListRelationFilter
 }
 
 export type CurriculumOrderByWithRelationInput = {
@@ -185,6 +186,7 @@ export type CurriculumOrderByWithRelationInput = {
   source?: Prisma.SortOrderInput | Prisma.SortOrder
   degree?: Prisma.DegreeOrderByWithRelationInput
   courses?: Prisma.CurriculumCourseOrderByRelationAggregateInput
+  requirements?: Prisma.CurriculumRequirementOrderByRelationAggregateInput
 }
 
 export type CurriculumWhereUniqueInput = Prisma.AtLeast<{
@@ -197,6 +199,7 @@ export type CurriculumWhereUniqueInput = Prisma.AtLeast<{
   source?: Prisma.StringNullableFilter<"Curriculum"> | string | null
   degree?: Prisma.XOR<Prisma.DegreeScalarRelationFilter, Prisma.DegreeWhereInput>
   courses?: Prisma.CurriculumCourseListRelationFilter
+  requirements?: Prisma.CurriculumRequirementListRelationFilter
 }, "id">
 
 export type CurriculumOrderByWithAggregationInput = {
@@ -225,6 +228,7 @@ export type CurriculumCreateInput = {
   source?: string | null
   degree: Prisma.DegreeCreateNestedOneWithoutCurriculaInput
   courses?: Prisma.CurriculumCourseCreateNestedManyWithoutCurriculumInput
+  requirements?: Prisma.CurriculumRequirementCreateNestedManyWithoutCurriculumInput
 }
 
 export type CurriculumUncheckedCreateInput = {
@@ -233,6 +237,7 @@ export type CurriculumUncheckedCreateInput = {
   name?: string | null
   source?: string | null
   courses?: Prisma.CurriculumCourseUncheckedCreateNestedManyWithoutCurriculumInput
+  requirements?: Prisma.CurriculumRequirementUncheckedCreateNestedManyWithoutCurriculumInput
 }
 
 export type CurriculumUpdateInput = {
@@ -241,6 +246,7 @@ export type CurriculumUpdateInput = {
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   degree?: Prisma.DegreeUpdateOneRequiredWithoutCurriculaNestedInput
   courses?: Prisma.CurriculumCourseUpdateManyWithoutCurriculumNestedInput
+  requirements?: Prisma.CurriculumRequirementUpdateManyWithoutCurriculumNestedInput
 }
 
 export type CurriculumUncheckedUpdateInput = {
@@ -249,6 +255,7 @@ export type CurriculumUncheckedUpdateInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   courses?: Prisma.CurriculumCourseUncheckedUpdateManyWithoutCurriculumNestedInput
+  requirements?: Prisma.CurriculumRequirementUncheckedUpdateManyWithoutCurriculumNestedInput
 }
 
 export type CurriculumCreateManyInput = {
@@ -349,6 +356,20 @@ export type CurriculumUncheckedUpdateManyWithoutDegreeNestedInput = {
   deleteMany?: Prisma.CurriculumScalarWhereInput | Prisma.CurriculumScalarWhereInput[]
 }
 
+export type CurriculumCreateNestedOneWithoutRequirementsInput = {
+  create?: Prisma.XOR<Prisma.CurriculumCreateWithoutRequirementsInput, Prisma.CurriculumUncheckedCreateWithoutRequirementsInput>
+  connectOrCreate?: Prisma.CurriculumCreateOrConnectWithoutRequirementsInput
+  connect?: Prisma.CurriculumWhereUniqueInput
+}
+
+export type CurriculumUpdateOneRequiredWithoutRequirementsNestedInput = {
+  create?: Prisma.XOR<Prisma.CurriculumCreateWithoutRequirementsInput, Prisma.CurriculumUncheckedCreateWithoutRequirementsInput>
+  connectOrCreate?: Prisma.CurriculumCreateOrConnectWithoutRequirementsInput
+  upsert?: Prisma.CurriculumUpsertWithoutRequirementsInput
+  connect?: Prisma.CurriculumWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CurriculumUpdateToOneWithWhereWithoutRequirementsInput, Prisma.CurriculumUpdateWithoutRequirementsInput>, Prisma.CurriculumUncheckedUpdateWithoutRequirementsInput>
+}
+
 export type CurriculumCreateNestedOneWithoutCoursesInput = {
   create?: Prisma.XOR<Prisma.CurriculumCreateWithoutCoursesInput, Prisma.CurriculumUncheckedCreateWithoutCoursesInput>
   connectOrCreate?: Prisma.CurriculumCreateOrConnectWithoutCoursesInput
@@ -368,6 +389,7 @@ export type CurriculumCreateWithoutDegreeInput = {
   name?: string | null
   source?: string | null
   courses?: Prisma.CurriculumCourseCreateNestedManyWithoutCurriculumInput
+  requirements?: Prisma.CurriculumRequirementCreateNestedManyWithoutCurriculumInput
 }
 
 export type CurriculumUncheckedCreateWithoutDegreeInput = {
@@ -375,6 +397,7 @@ export type CurriculumUncheckedCreateWithoutDegreeInput = {
   name?: string | null
   source?: string | null
   courses?: Prisma.CurriculumCourseUncheckedCreateNestedManyWithoutCurriculumInput
+  requirements?: Prisma.CurriculumRequirementUncheckedCreateNestedManyWithoutCurriculumInput
 }
 
 export type CurriculumCreateOrConnectWithoutDegreeInput = {
@@ -412,11 +435,60 @@ export type CurriculumScalarWhereInput = {
   source?: Prisma.StringNullableFilter<"Curriculum"> | string | null
 }
 
+export type CurriculumCreateWithoutRequirementsInput = {
+  id?: string
+  name?: string | null
+  source?: string | null
+  degree: Prisma.DegreeCreateNestedOneWithoutCurriculaInput
+  courses?: Prisma.CurriculumCourseCreateNestedManyWithoutCurriculumInput
+}
+
+export type CurriculumUncheckedCreateWithoutRequirementsInput = {
+  id?: string
+  degreeId: string
+  name?: string | null
+  source?: string | null
+  courses?: Prisma.CurriculumCourseUncheckedCreateNestedManyWithoutCurriculumInput
+}
+
+export type CurriculumCreateOrConnectWithoutRequirementsInput = {
+  where: Prisma.CurriculumWhereUniqueInput
+  create: Prisma.XOR<Prisma.CurriculumCreateWithoutRequirementsInput, Prisma.CurriculumUncheckedCreateWithoutRequirementsInput>
+}
+
+export type CurriculumUpsertWithoutRequirementsInput = {
+  update: Prisma.XOR<Prisma.CurriculumUpdateWithoutRequirementsInput, Prisma.CurriculumUncheckedUpdateWithoutRequirementsInput>
+  create: Prisma.XOR<Prisma.CurriculumCreateWithoutRequirementsInput, Prisma.CurriculumUncheckedCreateWithoutRequirementsInput>
+  where?: Prisma.CurriculumWhereInput
+}
+
+export type CurriculumUpdateToOneWithWhereWithoutRequirementsInput = {
+  where?: Prisma.CurriculumWhereInput
+  data: Prisma.XOR<Prisma.CurriculumUpdateWithoutRequirementsInput, Prisma.CurriculumUncheckedUpdateWithoutRequirementsInput>
+}
+
+export type CurriculumUpdateWithoutRequirementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  degree?: Prisma.DegreeUpdateOneRequiredWithoutCurriculaNestedInput
+  courses?: Prisma.CurriculumCourseUpdateManyWithoutCurriculumNestedInput
+}
+
+export type CurriculumUncheckedUpdateWithoutRequirementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  degreeId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  courses?: Prisma.CurriculumCourseUncheckedUpdateManyWithoutCurriculumNestedInput
+}
+
 export type CurriculumCreateWithoutCoursesInput = {
   id?: string
   name?: string | null
   source?: string | null
   degree: Prisma.DegreeCreateNestedOneWithoutCurriculaInput
+  requirements?: Prisma.CurriculumRequirementCreateNestedManyWithoutCurriculumInput
 }
 
 export type CurriculumUncheckedCreateWithoutCoursesInput = {
@@ -424,6 +496,7 @@ export type CurriculumUncheckedCreateWithoutCoursesInput = {
   degreeId: string
   name?: string | null
   source?: string | null
+  requirements?: Prisma.CurriculumRequirementUncheckedCreateNestedManyWithoutCurriculumInput
 }
 
 export type CurriculumCreateOrConnectWithoutCoursesInput = {
@@ -447,6 +520,7 @@ export type CurriculumUpdateWithoutCoursesInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   degree?: Prisma.DegreeUpdateOneRequiredWithoutCurriculaNestedInput
+  requirements?: Prisma.CurriculumRequirementUpdateManyWithoutCurriculumNestedInput
 }
 
 export type CurriculumUncheckedUpdateWithoutCoursesInput = {
@@ -454,6 +528,7 @@ export type CurriculumUncheckedUpdateWithoutCoursesInput = {
   degreeId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requirements?: Prisma.CurriculumRequirementUncheckedUpdateManyWithoutCurriculumNestedInput
 }
 
 export type CurriculumCreateManyDegreeInput = {
@@ -467,6 +542,7 @@ export type CurriculumUpdateWithoutDegreeInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   courses?: Prisma.CurriculumCourseUpdateManyWithoutCurriculumNestedInput
+  requirements?: Prisma.CurriculumRequirementUpdateManyWithoutCurriculumNestedInput
 }
 
 export type CurriculumUncheckedUpdateWithoutDegreeInput = {
@@ -474,6 +550,7 @@ export type CurriculumUncheckedUpdateWithoutDegreeInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   courses?: Prisma.CurriculumCourseUncheckedUpdateManyWithoutCurriculumNestedInput
+  requirements?: Prisma.CurriculumRequirementUncheckedUpdateManyWithoutCurriculumNestedInput
 }
 
 export type CurriculumUncheckedUpdateManyWithoutDegreeInput = {
@@ -489,10 +566,12 @@ export type CurriculumUncheckedUpdateManyWithoutDegreeInput = {
 
 export type CurriculumCountOutputType = {
   courses: number
+  requirements: number
 }
 
 export type CurriculumCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   courses?: boolean | CurriculumCountOutputTypeCountCoursesArgs
+  requirements?: boolean | CurriculumCountOutputTypeCountRequirementsArgs
 }
 
 /**
@@ -512,6 +591,13 @@ export type CurriculumCountOutputTypeCountCoursesArgs<ExtArgs extends runtime.Ty
   where?: Prisma.CurriculumCourseWhereInput
 }
 
+/**
+ * CurriculumCountOutputType without action
+ */
+export type CurriculumCountOutputTypeCountRequirementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CurriculumRequirementWhereInput
+}
+
 
 export type CurriculumSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -520,6 +606,7 @@ export type CurriculumSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   source?: boolean
   degree?: boolean | Prisma.DegreeDefaultArgs<ExtArgs>
   courses?: boolean | Prisma.Curriculum$coursesArgs<ExtArgs>
+  requirements?: boolean | Prisma.Curriculum$requirementsArgs<ExtArgs>
   _count?: boolean | Prisma.CurriculumCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["curriculum"]>
 
@@ -550,6 +637,7 @@ export type CurriculumOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs
 export type CurriculumInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   degree?: boolean | Prisma.DegreeDefaultArgs<ExtArgs>
   courses?: boolean | Prisma.Curriculum$coursesArgs<ExtArgs>
+  requirements?: boolean | Prisma.Curriculum$requirementsArgs<ExtArgs>
   _count?: boolean | Prisma.CurriculumCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CurriculumIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -564,6 +652,7 @@ export type $CurriculumPayload<ExtArgs extends runtime.Types.Extensions.Internal
   objects: {
     degree: Prisma.$DegreePayload<ExtArgs>
     courses: Prisma.$CurriculumCoursePayload<ExtArgs>[]
+    requirements: Prisma.$CurriculumRequirementPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -966,6 +1055,7 @@ export interface Prisma__CurriculumClient<T, Null = never, ExtArgs extends runti
   readonly [Symbol.toStringTag]: "PrismaPromise"
   degree<T extends Prisma.DegreeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DegreeDefaultArgs<ExtArgs>>): Prisma.Prisma__DegreeClient<runtime.Types.Result.GetResult<Prisma.$DegreePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   courses<T extends Prisma.Curriculum$coursesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Curriculum$coursesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CurriculumCoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  requirements<T extends Prisma.Curriculum$requirementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Curriculum$requirementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CurriculumRequirementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1419,6 +1509,30 @@ export type Curriculum$coursesArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.CurriculumCourseScalarFieldEnum | Prisma.CurriculumCourseScalarFieldEnum[]
+}
+
+/**
+ * Curriculum.requirements
+ */
+export type Curriculum$requirementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CurriculumRequirement
+   */
+  select?: Prisma.CurriculumRequirementSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CurriculumRequirement
+   */
+  omit?: Prisma.CurriculumRequirementOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CurriculumRequirementInclude<ExtArgs> | null
+  where?: Prisma.CurriculumRequirementWhereInput
+  orderBy?: Prisma.CurriculumRequirementOrderByWithRelationInput | Prisma.CurriculumRequirementOrderByWithRelationInput[]
+  cursor?: Prisma.CurriculumRequirementWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CurriculumRequirementScalarFieldEnum | Prisma.CurriculumRequirementScalarFieldEnum[]
 }
 
 /**

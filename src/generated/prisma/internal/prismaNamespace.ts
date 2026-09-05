@@ -405,6 +405,8 @@ export const ModelName = {
   Faculty: 'Faculty',
   Degree: 'Degree',
   Curriculum: 'Curriculum',
+  CurriculumRequirement: 'CurriculumRequirement',
+  CurriculumRequirementOption: 'CurriculumRequirementOption',
   CurriculumCourse: 'CurriculumCourse',
   Domain: 'Domain',
   Subject: 'Subject',
@@ -413,6 +415,7 @@ export const ModelName = {
   SkillPrerequisite: 'SkillPrerequisite',
   Course: 'Course',
   CoursePrerequisite: 'CoursePrerequisite',
+  CourseCorequisite: 'CourseCorequisite',
   Resource: 'Resource',
   ResourceSkill: 'ResourceSkill',
   LearningPath: 'LearningPath',
@@ -441,7 +444,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "studyProfile" | "scheduleEnrollment" | "session" | "university" | "faculty" | "degree" | "curriculum" | "curriculumCourse" | "domain" | "subject" | "topic" | "skill" | "skillPrerequisite" | "course" | "coursePrerequisite" | "resource" | "resourceSkill" | "learningPath" | "learningPathStep" | "userGoal" | "userSkill" | "userProgress" | "assessment" | "question" | "assessmentAttempt" | "exercise" | "bookmark" | "dailyActivity"
+    modelProps: "user" | "studyProfile" | "scheduleEnrollment" | "session" | "university" | "faculty" | "degree" | "curriculum" | "curriculumRequirement" | "curriculumRequirementOption" | "curriculumCourse" | "domain" | "subject" | "topic" | "skill" | "skillPrerequisite" | "course" | "coursePrerequisite" | "courseCorequisite" | "resource" | "resourceSkill" | "learningPath" | "learningPathStep" | "userGoal" | "userSkill" | "userProgress" | "assessment" | "question" | "assessmentAttempt" | "exercise" | "bookmark" | "dailyActivity"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1037,6 +1040,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CurriculumRequirement: {
+      payload: Prisma.$CurriculumRequirementPayload<ExtArgs>
+      fields: Prisma.CurriculumRequirementFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CurriculumRequirementFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CurriculumRequirementPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CurriculumRequirementFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CurriculumRequirementPayload>
+        }
+        findFirst: {
+          args: Prisma.CurriculumRequirementFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CurriculumRequirementPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CurriculumRequirementFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CurriculumRequirementPayload>
+        }
+        findMany: {
+          args: Prisma.CurriculumRequirementFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CurriculumRequirementPayload>[]
+        }
+        create: {
+          args: Prisma.CurriculumRequirementCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CurriculumRequirementPayload>
+        }
+        createMany: {
+          args: Prisma.CurriculumRequirementCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CurriculumRequirementCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CurriculumRequirementPayload>[]
+        }
+        delete: {
+          args: Prisma.CurriculumRequirementDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CurriculumRequirementPayload>
+        }
+        update: {
+          args: Prisma.CurriculumRequirementUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CurriculumRequirementPayload>
+        }
+        deleteMany: {
+          args: Prisma.CurriculumRequirementDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CurriculumRequirementUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CurriculumRequirementUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CurriculumRequirementPayload>[]
+        }
+        upsert: {
+          args: Prisma.CurriculumRequirementUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CurriculumRequirementPayload>
+        }
+        aggregate: {
+          args: Prisma.CurriculumRequirementAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCurriculumRequirement>
+        }
+        groupBy: {
+          args: Prisma.CurriculumRequirementGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CurriculumRequirementGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CurriculumRequirementCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CurriculumRequirementCountAggregateOutputType> | number
+        }
+      }
+    }
+    CurriculumRequirementOption: {
+      payload: Prisma.$CurriculumRequirementOptionPayload<ExtArgs>
+      fields: Prisma.CurriculumRequirementOptionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CurriculumRequirementOptionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CurriculumRequirementOptionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CurriculumRequirementOptionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CurriculumRequirementOptionPayload>
+        }
+        findFirst: {
+          args: Prisma.CurriculumRequirementOptionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CurriculumRequirementOptionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CurriculumRequirementOptionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CurriculumRequirementOptionPayload>
+        }
+        findMany: {
+          args: Prisma.CurriculumRequirementOptionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CurriculumRequirementOptionPayload>[]
+        }
+        create: {
+          args: Prisma.CurriculumRequirementOptionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CurriculumRequirementOptionPayload>
+        }
+        createMany: {
+          args: Prisma.CurriculumRequirementOptionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CurriculumRequirementOptionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CurriculumRequirementOptionPayload>[]
+        }
+        delete: {
+          args: Prisma.CurriculumRequirementOptionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CurriculumRequirementOptionPayload>
+        }
+        update: {
+          args: Prisma.CurriculumRequirementOptionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CurriculumRequirementOptionPayload>
+        }
+        deleteMany: {
+          args: Prisma.CurriculumRequirementOptionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CurriculumRequirementOptionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CurriculumRequirementOptionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CurriculumRequirementOptionPayload>[]
+        }
+        upsert: {
+          args: Prisma.CurriculumRequirementOptionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CurriculumRequirementOptionPayload>
+        }
+        aggregate: {
+          args: Prisma.CurriculumRequirementOptionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCurriculumRequirementOption>
+        }
+        groupBy: {
+          args: Prisma.CurriculumRequirementOptionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CurriculumRequirementOptionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CurriculumRequirementOptionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CurriculumRequirementOptionCountAggregateOutputType> | number
+        }
+      }
+    }
     CurriculumCourse: {
       payload: Prisma.$CurriculumCoursePayload<ExtArgs>
       fields: Prisma.CurriculumCourseFieldRefs
@@ -1626,6 +1777,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.CoursePrerequisiteCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.CoursePrerequisiteCountAggregateOutputType> | number
+        }
+      }
+    }
+    CourseCorequisite: {
+      payload: Prisma.$CourseCorequisitePayload<ExtArgs>
+      fields: Prisma.CourseCorequisiteFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CourseCorequisiteFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseCorequisitePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CourseCorequisiteFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseCorequisitePayload>
+        }
+        findFirst: {
+          args: Prisma.CourseCorequisiteFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseCorequisitePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CourseCorequisiteFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseCorequisitePayload>
+        }
+        findMany: {
+          args: Prisma.CourseCorequisiteFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseCorequisitePayload>[]
+        }
+        create: {
+          args: Prisma.CourseCorequisiteCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseCorequisitePayload>
+        }
+        createMany: {
+          args: Prisma.CourseCorequisiteCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CourseCorequisiteCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseCorequisitePayload>[]
+        }
+        delete: {
+          args: Prisma.CourseCorequisiteDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseCorequisitePayload>
+        }
+        update: {
+          args: Prisma.CourseCorequisiteUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseCorequisitePayload>
+        }
+        deleteMany: {
+          args: Prisma.CourseCorequisiteDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CourseCorequisiteUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CourseCorequisiteUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseCorequisitePayload>[]
+        }
+        upsert: {
+          args: Prisma.CourseCorequisiteUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseCorequisitePayload>
+        }
+        aggregate: {
+          args: Prisma.CourseCorequisiteAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCourseCorequisite>
+        }
+        groupBy: {
+          args: Prisma.CourseCorequisiteGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CourseCorequisiteGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CourseCorequisiteCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CourseCorequisiteCountAggregateOutputType> | number
         }
       }
     }
@@ -2722,6 +2947,32 @@ export const CurriculumScalarFieldEnum = {
 export type CurriculumScalarFieldEnum = (typeof CurriculumScalarFieldEnum)[keyof typeof CurriculumScalarFieldEnum]
 
 
+export const CurriculumRequirementScalarFieldEnum = {
+  id: 'id',
+  curriculumId: 'curriculumId',
+  name: 'name',
+  section: 'section',
+  type: 'type',
+  minimumUnits: 'minimumUnits',
+  minimumCount: 'minimumCount',
+  order: 'order',
+  sourceText: 'sourceText'
+} as const
+
+export type CurriculumRequirementScalarFieldEnum = (typeof CurriculumRequirementScalarFieldEnum)[keyof typeof CurriculumRequirementScalarFieldEnum]
+
+
+export const CurriculumRequirementOptionScalarFieldEnum = {
+  id: 'id',
+  requirementId: 'requirementId',
+  courseId: 'courseId',
+  groupKey: 'groupKey',
+  order: 'order'
+} as const
+
+export type CurriculumRequirementOptionScalarFieldEnum = (typeof CurriculumRequirementOptionScalarFieldEnum)[keyof typeof CurriculumRequirementOptionScalarFieldEnum]
+
+
 export const CurriculumCourseScalarFieldEnum = {
   id: 'id',
   curriculumId: 'curriculumId',
@@ -2816,6 +3067,14 @@ export const CoursePrerequisiteScalarFieldEnum = {
 } as const
 
 export type CoursePrerequisiteScalarFieldEnum = (typeof CoursePrerequisiteScalarFieldEnum)[keyof typeof CoursePrerequisiteScalarFieldEnum]
+
+
+export const CourseCorequisiteScalarFieldEnum = {
+  courseId: 'courseId',
+  corequisiteId: 'corequisiteId'
+} as const
+
+export type CourseCorequisiteScalarFieldEnum = (typeof CourseCorequisiteScalarFieldEnum)[keyof typeof CourseCorequisiteScalarFieldEnum]
 
 
 export const ResourceScalarFieldEnum = {
@@ -3211,6 +3470,8 @@ export type GlobalOmitConfig = {
   faculty?: Prisma.FacultyOmit
   degree?: Prisma.DegreeOmit
   curriculum?: Prisma.CurriculumOmit
+  curriculumRequirement?: Prisma.CurriculumRequirementOmit
+  curriculumRequirementOption?: Prisma.CurriculumRequirementOptionOmit
   curriculumCourse?: Prisma.CurriculumCourseOmit
   domain?: Prisma.DomainOmit
   subject?: Prisma.SubjectOmit
@@ -3219,6 +3480,7 @@ export type GlobalOmitConfig = {
   skillPrerequisite?: Prisma.SkillPrerequisiteOmit
   course?: Prisma.CourseOmit
   coursePrerequisite?: Prisma.CoursePrerequisiteOmit
+  courseCorequisite?: Prisma.CourseCorequisiteOmit
   resource?: Prisma.ResourceOmit
   resourceSkill?: Prisma.ResourceSkillOmit
   learningPath?: Prisma.LearningPathOmit

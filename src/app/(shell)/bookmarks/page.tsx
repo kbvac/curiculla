@@ -15,7 +15,7 @@ export default async function BookmarksPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
       <h1 className="font-display text-3xl font-bold text-fg">Favoris</h1>
-      <p className="mt-2 text-fg-muted">Your saved items for quick access.</p>
+      <p className="mt-2 text-fg-muted">Tes éléments enregistrés, accessibles rapidement.</p>
 
       {bookmarks.length === 0 ? (
         <div className="mt-12 text-center">

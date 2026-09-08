@@ -159,7 +159,7 @@ export function ResourceList({ resources }: Props) {
       )}
 
       {sorted.length === 0 && (
-        <p className="py-8 text-center text-fg-muted">No resources found.</p>
+        <p className="py-8 text-center text-fg-muted">Aucune ressource trouvée.</p>
       )}
     </div>
   );

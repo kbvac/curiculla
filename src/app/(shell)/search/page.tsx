@@ -105,7 +105,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
 
       {results.paths.length > 0 && (
         <section className="mt-8">
-          <h2 className="font-display text-lg font-semibold text-fg">Learning Paths</h2>
+          <h2 className="font-display text-lg font-semibold text-fg">Parcours</h2>
           <div className="mt-3 space-y-2">
             {results.paths.map((p) => (
               <Link
@@ -158,7 +158,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
 
       {results.resources.length > 0 && (
         <section className="mt-8">
-          <h2 className="font-display text-lg font-semibold text-fg">Resources</h2>
+          <h2 className="font-display text-lg font-semibold text-fg">Ressources</h2>
           <div className="mt-3 space-y-2">
             {results.resources.map((r) => (
               <a
@@ -181,7 +181,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
 
       {query.length >= 2 && totalResults === 0 && (
         <div className="mt-12 text-center">
-          <p className="text-fg-muted">No results found. Try different keywords.</p>
+          <p className="text-fg-muted">Aucun résultat. Essaie d’autres mots-clés.</p>
         </div>
       )}
     </div>

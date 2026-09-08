@@ -242,7 +242,7 @@ export default async function CourseDetailPage({
                             <div className="text-lg font-bold text-success">
                               {Math.round(r.qualityScore)}
                             </div>
-                            <div className="text-xs text-fg-faint">quality</div>
+                            <div className="text-xs text-fg-faint">qualité</div>
                           </div>
                         )}
                       </div>
@@ -256,14 +256,7 @@ export default async function CourseDetailPage({
                       key={r.slug}
                       className="block rounded-lg border border-dashed border-accent/40 bg-card p-4"
                     >
-                      <a
-                        href={r.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block hover:opacity-90"
-                      >
-                        {inner}
-                      </a>
+                      <div>{inner}</div>
                     </div>
                   ) : (
                     <a

@@ -85,13 +85,13 @@ export default function SkillGapPage() {
 
       {/* Path selector */}
       <div className="mt-8">
-        <label className="block text-sm font-medium text-fg">Choose your target path</label>
+        <label className="block text-sm font-medium text-fg">Choisis ton parcours cible</label>
         <select
           value={selectedPath}
           onChange={(e) => loadGaps(e.target.value)}
           className="mt-2 block w-full rounded-lg border border-border bg-card px-4 py-3 text-fg outline-none focus:border-accent focus:ring-1 focus:ring-accent"
         >
-          <option value="">Select a learning path...</option>
+          <option value="">Choisir un parcours…</option>
           {paths.map((p) => (
             <option key={p.slug} value={p.slug}>
               {p.domain.name} — {p.name} ({p._count.steps} skills)
@@ -122,7 +122,7 @@ export default function SkillGapPage() {
                 href={`/paths/${selectedPath}`}
                 className="mt-4 inline-block rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-dark"
               >
-                View your path
+                Voir ton parcours
               </Link>
             </div>
           ) : (
@@ -187,7 +187,7 @@ export default function SkillGapPage() {
               <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-accent-light text-lg font-bold text-accent">
                 1
               </div>
-              <p className="mt-3 text-sm text-fg-muted">Choose a learning path as your goal</p>
+              <p className="mt-3 text-sm text-fg-muted">Choisis un parcours comme objectif</p>
             </div>
             <div>
               <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-accent-light text-lg font-bold text-accent">

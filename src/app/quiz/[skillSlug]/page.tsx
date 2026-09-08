@@ -106,7 +106,7 @@ export default function QuizPage() {
   if (error || !assessment) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-12 text-center">
-        <h1 className="font-display text-2xl font-bold text-fg">No quiz available</h1>
+        <h1 className="font-display text-2xl font-bold text-fg">Aucun quiz disponible</h1>
         <p className="mt-2 text-fg-muted">{error || "No assessment found for this skill."}</p>
         <Link href={`/skills/${skillSlug}`} className="mt-4 inline-block text-accent hover:text-accent-dark">
           Back to skill
@@ -134,7 +134,7 @@ export default function QuizPage() {
         </div>
 
         <div className="mt-8 space-y-6">
-          <h2 className="font-display text-lg font-semibold text-fg">Review Answers</h2>
+          <h2 className="font-display text-lg font-semibold text-fg">Corriger tes réponses</h2>
           {result.results.map((r, i) => (
             <div
               key={r.questionId}
@@ -187,7 +187,7 @@ export default function QuizPage() {
               setCurrentQ(0);
               setAnswers(new Array(assessment.questions.length).fill(null));
             }}
-            className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-dark"
+            className="btn-primary"
           >
             Repasser le quiz
           </button>
@@ -212,7 +212,7 @@ export default function QuizPage() {
       {/* Progress bar */}
       <div className="mb-6">
         <div className="flex items-center justify-between text-sm text-fg-muted">
-          <span>Question {currentQ + 1} of {assessment.questions.length}</span>
+          <span>Question {currentQ + 1} sur {assessment.questions.length}</span>
           <span>{Math.round(progress)}%</span>
         </div>
         <div className="progress-bar mt-2">
@@ -254,17 +254,17 @@ export default function QuizPage() {
         {currentQ < assessment.questions.length - 1 ? (
           <button
             onClick={() => setCurrentQ((q) => q + 1)}
-            className="rounded-lg bg-fg px-4 py-2 text-sm font-medium text-card hover:bg-fg/90"
+            className="btn-ghost"
           >
-            Next
+            Suivante
           </button>
         ) : (
           <button
             onClick={handleSubmit}
             disabled={submitting || answers.includes(null)}
-            className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-dark disabled:opacity-50"
+            className="btn-primary disabled:opacity-50"
           >
-            {submitting ? "Submitting..." : "Submit quiz"}
+            {submitting ? "Envoi…" : "Valider le quiz"}
           </button>
         )}
       </div>

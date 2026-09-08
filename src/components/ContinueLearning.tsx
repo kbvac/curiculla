@@ -18,7 +18,7 @@ export async function ContinueLearning({ userId }: { userId: string }) {
 
   return (
     <div className="rounded-lg border border-border bg-card p-6">
-      <span className="text-xs font-medium text-fg-faint">CONTINUE LEARNING</span>
+      <span className="text-xs font-medium text-fg-faint">REPRENDRE</span>
       {activeGoal && (
         <h3 className="mt-1 font-display text-lg font-semibold text-fg">
           {activeGoal.path.name}

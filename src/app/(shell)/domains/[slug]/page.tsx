@@ -44,7 +44,7 @@ export default async function DomainDetailPage({ params }: { params: Promise<{ s
 
       {/* Learning Paths */}
       <section className="mb-12">
-        <h2 className="font-display text-xl font-semibold text-fg">Learning Paths</h2>
+        <h2 className="font-display text-xl font-semibold text-fg">Parcours</h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {domain.paths.map((path) => (
             <Link
